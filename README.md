@@ -1,6 +1,6 @@
 # LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Feb 18 12:50:51 EST 2015
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:27:22 EST 2015
 
 ## Citation
 
@@ -32,7 +32,7 @@ The most important function is **LocalizedStoredProjections**:
  	[sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
 	LocalizedStoredProjections(focussites,storefile)
 
-LocalizedStoredProjections takes as input two parameters. STOREFILE is the path of the SLRProjections140523core.mat file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables to Kopp et al. (2014) to identify the IDs corresponding to your site of interest.)
+LocalizedStoredProjections takes as input two parameters. STOREFILE is the path of the SLRProjections140523core.mat file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables to Kopp et al. (2014) to identify the IDs corresponding to your site of interest. Specify 0 if you want GSL samples returned in the same format.)
 
 LocalizedStoredProjections outputs two M x N cell arrays of localized Monte Carlo samples, SAMPSLOCRISE and SAMPSLOCCOMPONENTS. In each cell array, the m rows correspond to the sites specified in FOCUSSITES and the N columns to different RCPs (specifically, RCP 8.5, RCP 6.0, RCP 4.5, and RCP 2.6). 
 
@@ -66,8 +66,8 @@ Several other provided functions produce output, with detailed parameter specifi
 **PlotSLRProjection** generates a time series plot analogous to Figure 3 of Kopp et al. (2014).
 
 **PlotSLRProjectionVariance** generates a variance decomposition plot analogous to Figure 4 of Kopp et al. (2014).
-**WriteTableMC** outputs Monte Carlo samples.
-**WriteTableSLRProjection** outputs desired quantiles of the projections.
+**WriteTableMC** outputs Monte Carlo samples.
+**WriteTableSLRProjection** outputs desired quantiles of the projections.
 
 ## Example usage
 
@@ -112,6 +112,14 @@ Several other provided functions produce output, with detailed parameter specifi
 	% to allow incorporation of alternative estimates of background trend
 	
 	WriteTableMC(sampsloccomponents,1:23,siteids,sitenames,targyears,scens,'LSLProj_nobkgd_');
+	
+	% output decomposition
+	WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
+
+	% pull GSL samples
+	[sampsGSLrise,sampsGSLcomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(0,corefile);
+	WriteTableDecomposition(sampsGSLcomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
+
 	
 
 ----

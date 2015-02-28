@@ -1,6 +1,6 @@
 % Example script for use of LocalizeSL
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Feb 18 12:48:32 EST 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:26:39 EST 2015
 
 selectedSite = 12; % use PSMSL ID here to select site
 
@@ -43,3 +43,10 @@ WriteTableMC(sampslocrise,[],siteids,sitenames,targyears,scens);
 % to allow incorporation of alternative estimates of background trend
 
 WriteTableMC(sampsloccomponents,1:23,siteids,sitenames,targyears,scens,'LSLProj_nobkgd_');
+
+% output decomposition
+WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
+
+% pull GSL samples
+[sampsGSLrise,sampsGSLcomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(0,corefile);
+WriteTableDecomposition(sampsGSLcomponents,quantlevs,siteids,sitenames,targyears,cols,scens);

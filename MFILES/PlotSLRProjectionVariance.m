@@ -25,7 +25,7 @@ subyears=find((targyears>=limyrs(1)).*(targyears<=limyrs(2)));
 if cols.colOD==cols.colTE
     cols.colTE2=[];
 else
-    cols.colTE2=colTE;
+    cols.colTE2=cols.colTE;
 end
 
 cols.colIS = [cols.colAIS cols.colGIS];
