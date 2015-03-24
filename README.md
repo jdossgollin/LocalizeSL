@@ -38,7 +38,11 @@ LocalizedStoredProjections outputs two M x N cell arrays of localized Monte Carl
 
 The individual cells of SAMPSLOCRISE are P x Q arrays, with the P rows being 10,000 Monte Carlo samples and the Q columns corresponding to decadal time points. The individual cells of SAMPSLOCRISE are P x Q arrays, with the P rows being 10,000 Monte Carlo samples and the Q columns corresponding to decadal time points. The individual cells of SAMPSLOCCOMPONENTS are P x R x Q arrays. The 1st and 3rd dimensions correspond to the rows and columns of SAMPSLOCRISE; the R columns represent 24 different factors contributing to sea-level rise. Specifically, these factors are:
 
-	1 - GIC: Alaska	2 - GIC: Western Canada/US	3 - GIC: Arctic Canada North	4 - GIC: Arctic Canada South	5 - GIC: Greenland peripheral glaciers
+	1 - GIC: Alaska
+	2 - GIC: Western Canada/US
+	3 - GIC: Arctic Canada North
+	4 - GIC: Arctic Canada South
+	5 - GIC: Greenland peripheral glaciers
 	6 - GIC: Iceland
 	7 - GIC: Svalbard
 	8 - GIC: Scandinavia
