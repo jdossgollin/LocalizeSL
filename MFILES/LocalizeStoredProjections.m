@@ -1,7 +1,7 @@
 function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(focussites,storefile)
 
 % [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
-%          LocalizedStoredProjections(focussites,storefile)
+%          LocalizeStoredProjections(focussites,storefile)
 %
 % Load stored GSL MC samples and generate local MC samples
 %

@@ -1,6 +1,6 @@
 # LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:27:22 EST 2015
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue May 05 17:37:56 EDT 2015
 
 ## Citation
 
@@ -27,14 +27,14 @@ The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, whi
 
 Functions are stored in the MFILES directory.
 
-The most important function is **LocalizedStoredProjections**:
+The most important function is **LocalizeStoredProjections**:
 
  	[sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
-	LocalizedStoredProjections(focussites,storefile)
+	LocalizeStoredProjections(focussites,storefile)
 
-LocalizedStoredProjections takes as input two parameters. STOREFILE is the path of the SLRProjections140523core.mat file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables to Kopp et al. (2014) to identify the IDs corresponding to your site of interest. Specify 0 if you want GSL samples returned in the same format.)
+LocalizeStoredProjections takes as input two parameters. STOREFILE is the path of the SLRProjections140523core.mat file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables to Kopp et al. (2014) to identify the IDs corresponding to your site of interest. Specify 0 if you want GSL samples returned in the same format.)
 
-LocalizedStoredProjections outputs two M x N cell arrays of localized Monte Carlo samples, SAMPSLOCRISE and SAMPSLOCCOMPONENTS. In each cell array, the m rows correspond to the sites specified in FOCUSSITES and the N columns to different RCPs (specifically, RCP 8.5, RCP 6.0, RCP 4.5, and RCP 2.6). 
+LocalizeStoredProjections outputs two M x N cell arrays of localized Monte Carlo samples, SAMPSLOCRISE and SAMPSLOCCOMPONENTS. In each cell array, the m rows correspond to the sites specified in FOCUSSITES and the N columns to different RCPs (specifically, RCP 8.5, RCP 6.0, RCP 4.5, and RCP 2.6). 
 
 The individual cells of SAMPSLOCRISE are P x Q arrays, with the P rows being 10,000 Monte Carlo samples and the Q columns corresponding to decadal time points. The individual cells of SAMPSLOCRISE are P x Q arrays, with the P rows being 10,000 Monte Carlo samples and the Q columns corresponding to decadal time points. The individual cells of SAMPSLOCCOMPONENTS are P x R x Q arrays. The 1st and 3rd dimensions correspond to the rows and columns of SAMPSLOCRISE; the R columns represent 24 different factors contributing to sea-level rise. Specifically, these factors are:
 
@@ -63,7 +63,7 @@ The individual cells of SAMPSLOCRISE are P x Q arrays, with the P rows being 10,
 	23 - Oceanographic processes (thermal expansion and ocean dynamics)
 	24 - GIA, tectonics, and other background processes
 	
-The other outputs of LocalizedStoredProjections are identifying information that can be passed out to the output commands. SITEIDS returns the PSMSL site IDs of selected sites; SITENAMES the names of those sites; TARGYEARS the years of the output; SCENS the RCPs; and COLS are column labels.
+The other outputs of LocalizeStoredProjections are identifying information that can be passed out to the output commands. SITEIDS returns the PSMSL site IDs of selected sites; SITENAMES the names of those sites; TARGYEARS the years of the output; SCENS the RCPs; and COLS are column labels.
 
 Several other provided functions produce output, with detailed parameter specification described in the headers.
 
