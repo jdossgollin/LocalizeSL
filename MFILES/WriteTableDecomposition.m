@@ -1,12 +1,12 @@
-function WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,fileprefix)
+function WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,fileprefix,subcomp,labls)
 
-% WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,[fileprefix])
+% WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,[fileprefix],[subcomp],[labls])
 %
 % Writes table with decomposition into major components.
 %
 % sampsloccomponents, siteids, sitenames, targyears, scens, cols are outputted by LocalizeStoredProjections
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:07:03 EST 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jul 16 10:11:29 EDT 2015
 
 defval('fileprefix','LSLproj_decomp_');
 defval('quantlevs',[.01 .05 .167 .5 .833 .95 .99 .995 .999]);
@@ -17,8 +17,8 @@ else
     cols.colTE2=cols.colTE;
 end
 
-subcomp={cols.colAIS,cols.colGIS,[cols.colTE2 cols.colOD],[cols.colGIC],[cols.colLS],[cols.colGIA]};
-labls={'AIS','GIS','Ocean','GIC','LWS','Bkgd'}; 
+defval('subcomp',{cols.colAIS,cols.colGIS,[cols.colTE2 cols.colOD],[cols.colGIC],[cols.colLS],[cols.colGIA]});
+defval('labls',{'AIS','GIS','Ocean','GIC','LWS','Bkgd'}); 
 
 for jjj=1:length(siteids)
     for kkk=1:length(scens)
