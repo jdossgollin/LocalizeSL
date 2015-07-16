@@ -1,6 +1,6 @@
-function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens)
+function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls)
 
-% PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel])
+% PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel].[dopooledscens],[subcomp],[labls])
 %
 % Plot variance decomposition of sea-level rise projections.
 %
@@ -9,7 +9,7 @@ function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,s
 % sitesel is the row id of the site of interest in sampslocrise (default: 1)
 % scensel is the sequential id of scenario of interest (default: 1)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Apr 16 09:03:35 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jul 16 10:35:10 EDT 2015
 
 % variance plots
 
@@ -29,8 +29,8 @@ else
 end
 
 cols.colIS = [cols.colAIS cols.colGIS];
-subcomp={cols.colAIS,cols.colIS,[cols.colIS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colLS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colLS cols.colTE2 cols.colOD cols.colGIA]};
-labls={'AIS','GIS','Ocean','GIC','LWS','Bkgd'};
+defval('subcomp',{cols.colAIS,cols.colIS,[cols.colIS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colLS cols.colTE2 cols.colOD],[cols.colGIC cols.colIS cols.colLS cols.colTE2 cols.colOD cols.colGIA]});
+defval('labls',{'AIS','GIS','Ocean','GIC','LWS','Bkgd'});
 
 % add variance if a field
 if isfield(cols,'colvar')
