@@ -1,7 +1,7 @@
-function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(focussites,storefile)
+function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(focussites,storefile,selectscens)
 
 % [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
-%          LocalizeStoredProjections(focussites,storefile)
+%          LocalizeStoredProjections(focussites,storefile,[selectscens])
 %
 % Load stored GSL MC samples and generate local MC samples
 %
@@ -12,6 +12,8 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 %             (specify 0 if you want GSL results returned in same format)
 % storefile: path of file with GSL samples and other output from
 %            Kopp et al. 2014
+% selectscens: indices of desired scens (1 = RCP 8.5, 2 = 6.0, 3 = 4.5, 4=2.6)
+%              default = [1 2 3 4]
 %
 % OUTPUTS
 % -------
@@ -32,11 +34,12 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:23:15 EST 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Aug 21 18:58:33 EDT 2015
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
 load(storefile,'scens','targregions','targregionnames','targyears','samps','seeds','OceanDynRegions','OceanDynYears','OceanDynMean','OceanDynStd','OceanDynN','ThermExpYears','ThermExpMean','ThermExpStd','OceanDynTECorr','rateprojs','rateprojssd','mergeZOSZOSTOGA','fpsite','quantlevs','colGIC','colGIS','colAIS','colLS','colTE');
+defval('selectscens',1:4);
 
 cols.colGIC=colGIC; cols.colGIS=colGIS; cols.colAIS=colAIS; cols.colLS=colLS; cols.colTE=colTE;
 
@@ -59,7 +62,7 @@ else
     [ib,ic]=sort(ib); ia=ia(ic); targregions2=targregions2(ic);
     targregions2names=targregionnames(ia);
 
-    [~, ~,~,sampslocrise,sampsloccomponents,cols.colGIA,cols.colOD] =  ProjectLSL(scens,targregions(ia),targregionnames(ia),targyears,samps,seeds,targregions,OceanDynRegions,OceanDynYears,OceanDynMean,OceanDynStd,OceanDynN, ThermExpYears, ThermExpMean, ThermExpStd, OceanDynTECorr,  rateprojs,rateprojssd,mergeZOSZOSTOGA,fpsite,quantlevs,colGIC,colGIS,colAIS,colLS,colTE,focussites);
+    [~, ~,~,sampslocrise,sampsloccomponents,cols.colGIA,cols.colOD] =  ProjectLSL(scens(selectscens),targregions(ia),targregionnames(ia),targyears,samps,seeds,targregions,OceanDynRegions,OceanDynYears,OceanDynMean,OceanDynStd,OceanDynN, ThermExpYears, ThermExpMean, ThermExpStd, OceanDynTECorr,  rateprojs,rateprojssd,mergeZOSZOSTOGA,fpsite,quantlevs,colGIC,colGIS,colAIS,colLS,colTE,focussites);
 
     siteids=focussites;
     for qq=1:length(siteids)
