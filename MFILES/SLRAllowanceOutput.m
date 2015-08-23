@@ -113,7 +113,7 @@ end
 
 if length(ALDC)==0
     for bbb=1:length(betas)
-        ALDC(bbb,:)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb));
+        ALDC(bbb,:)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25);
     end
 end
 
