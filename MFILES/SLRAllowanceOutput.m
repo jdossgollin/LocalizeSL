@@ -41,6 +41,28 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %     hp: subplot handles
 %     params: parameter values
 %
+% EXAMPLE:
+%
+%    shortname='NYC';
+%    selectedSite = 12; %PSMSL ID for New York City
+%    threshold = 0.5148;
+%    scale = 0.1285; % GPD scale
+%    shape = 0.1879; % GPD shape
+%    AEP10pt = 1.111; % 10% AEP
+%    
+%    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
+%             LocalizeStoredProjections(selectedSite,corefile,1);
+%    samps=[zeros(size(sampslocrise{1,1},1),1) ...
+%           sampslocrise{1,1}]/1000; % add base year and convert to meters
+%    samps=bsxfun(@min,samps,quantile(samps,.999));  
+%                      % truncate samples viewed as physically implausible
+%    targyears = [2000 targyears]; % add base year
+%      
+%    clf;
+%    [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps, ...
+%            targyears,threshold,scale,shape,[0.1 AEP10pt], ...
+%            sitenames{1},shortname);
+%
 % Note that, to calculate a time series of integrated sea-level rise allowances
 % starting at t1 and for years running up to t2 from a vector of instantaneous
 % allowaces Ainst(:,j), simply run:

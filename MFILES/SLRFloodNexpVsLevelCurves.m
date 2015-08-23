@@ -33,10 +33,33 @@ function [effcurve,testz]=SLRFloodNexpVsLevelCurves(samps,targyears,threshold,sc
 %               cols: heights as specified in testz)
 %     testz: heights for effcurve
 %
+% EXAMPLE:
+%
+%    shortname='NYC';
+%    selectedSite = 12; %PSMSL ID for New York City
+%    threshold = 0.5148;
+%    scale = 0.1285; % GPD scale
+%    shape = 0.1879; % GPD shape
+%    lambda = 2.8116; % Poisson Lambda
+%    
+%    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
+%             LocalizeStoredProjections(selectedSite,corefile,1);
+%    samps=[zeros(size(sampslocrise{1,1},1),1) ...
+%           sampslocrise{1,1}]/1000; % add base year and convert to meters
+%    samps=bsxfun(@min,samps,quantile(samps,.999));  
+%                      % truncate samples viewed as physically implausible
+%    targyears = [2000 targyears]; % add base year
+%      
+%    clf;
+%    [effcurve,testz]=SLRFloodNexpVsLevelCurves(samps,targyears,threshold, ...
+%                     scale,shape,lambda,sitenames{1},shortname);     
+%    pdfwrite([shortname '_returncurves']);
+%
 % Note that, to calculate am AADLL curve for a design life starting at t1 and
 % ending at t2 from the effcurve matrix, simply run:
 %
 %    mean(interp1(targyears,effcurve,t1:t2))
+%
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sun Aug 23 16:14:51 EDT 2015
 
@@ -53,7 +76,7 @@ if exist('params')
 end
 
 logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
-if ~exist('effcurve')
+if length(effcurve)==0
     for ttt=1:length(targyears)
         effcurve(ttt,:) = real(mean(exp(logN(bsxfun(@minus,testz,samps(:,ttt)))),1));
     end
@@ -83,7 +106,7 @@ if doplot
         
         hl(iii)=plot(testz,exp(logN(testz-ESLR(t))),[colrs1(qqq) '--']);
         legstr{iii}=['N+E(SL_{' num2str(endyears(qqq)) '})']; iii=iii+1;
-        
+
         hl(iii)=plot(testz,effcurve(t,:), [colrs1(qqq) '-']);
         legstr{iii} = ['N_e(' num2str(endyears(qqq)) ')'];  iii=iii+1;
         
