@@ -12,7 +12,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %     scale: GPD scale factor
 %     shape: GPD shape factor
 %     lambda: mean number of exceedances per year 
-%             alternatively, provide a pair of [N ht] and will calculate poissonL
+%             alternatively, provide a pair of [N ht] and will calculate lambda
 %             (e.g., for 1% flood of 2000 mm, [0.01 2000])
 %     sitelab: full name of site
 %     shortname: short name of site (for filename; no spaces)
@@ -24,18 +24,18 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %         - betas: beta values for Limited Degree of Confidence (LDC) allowances
 %                  (default: [0 .5 .67 .9 .95 .99 1])
 %         - N0s: expected numbers for allowance calculation; first one specified
-%                will be used for the (LDC allowanceS)
-%                (default: [.01 .1 .002])
+%                will be used for the (LDC allowances) (default: [.01 .1 .002])
 %         - doplot: generate plot (default: 1)
-%         - Ainst and ALDC: if passed, will skip calculation of these and use as specified
-%                           (if Ainst specified, will not calculated z0 or lambda)
+%         - Ainst and ALDC: if passed, will skip calculation of these and use
+%                           as specified (if Ainst specified, will not calculate
+%                           z0 or lambda)
 %
 % OUTPUTS:
 %
 %     Ainst: Instantaneous allowances (for beta = 1); rows correspond to years
 %            and columns to N0s
-%     ALDC: Instantaneous allowances with LDC for N0 = N0s(1); rows correspond to years
-%           and columns to betas
+%     ALDC: Instantaneous allowances with LDC for N0 = N0s(1); rows correspond 
+%           to years and columns to betas
 %     z0: height of flood level for each N0 without sea-level rise
 %     lambda: mean number of exceedances per year for Poisson-GPD
 %     hp: subplot handles

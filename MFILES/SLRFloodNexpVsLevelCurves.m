@@ -13,8 +13,6 @@ function [effcurve,testz]=SLRFloodNexpVsLevelCurves(samps,targyears,threshold,sc
 %     scale: GPD scale factor
 %     shape: GPD shape factor
 %     lambda: mean number of exceedances per year 
-%             alternatively, provide a pair of [N ht] and will calculate poissonL
-%             (e.g., for 1% flood of 2000 mm, [0.01 2000])
 %     sitelab: full name of site
 %     shortname: short name of site (for filename; no spaces)
 %     params: an optional structure with fields setting several parameters
@@ -25,12 +23,12 @@ function [effcurve,testz]=SLRFloodNexpVsLevelCurves(samps,targyears,threshold,sc
 %         - testz: vector of heights used for calculating the curve
 %                  (default: [0:.01:10])
 %         - doplot: generate plot (default: 1)
-%         - effcurve: if passed, will skip calculation of this and use as specified
+%         - effcurve: if passed, will skip calculation and use as specified
 %
 % OUTPUTS:
 %
-%     effcurve: expected number of floods of different heights (rows: years as in targyears;
-%               cols: heights as specified in testz)
+%     effcurve: expected number of floods of different heights (rows: years as
+%               in targyears; cols: heights as specified in testz)
 %     testz: heights for effcurve
 %
 % EXAMPLE:
