@@ -32,7 +32,38 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %     poissonL: mean number of exceedances per year
 %     expectedN: expectedN with allowances (for debugging)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Aug 22 18:06:56 EDT 2015
+% EXAMPLE:
+%
+%    shortname='NYC';
+%    selectedSite = 12; %PSMSL ID for New York City
+%    threshold = 0.5148;
+%    scale = 0.1285; % GPD scale
+%    shape = 0.1879; % GPD shape
+%    lambda = 2.8116; % Poisson Lambda
+%    
+%    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
+%             LocalizeStoredProjections(selectedS[Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scale,shape,poissonL,beta,MHHW)ite,corefile,1);
+%    samps=[zeros(size(sampslocrise{1,1},1),1) ...
+%           sampslocrise{1,1}]/1000; % add base yr, convert to meters
+%    samps=bsxfun(@min,samps,quantile(samps,.999));  
+%                % truncate samples viewed as physically implausible
+%    targyears = [2000 targ[Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scale,shape,poissonL,beta,MHHW)years]; % add base year
+%
+%
+%    N0 = 0.01; % we will calculate allowances for the current 1% level
+%    beta = 0.95; % 95% confidence in SLR PDF, 5% extra wt to worst case
+%    MHHW = 365.25; % 365.25 floods/year for z = 0
+%
+%    [Ainst,z0,ESLR]=SLRAllowance(samps,N0, ...
+%    threshold,scale,shape,lambda,beta,MHHW);
+%
+%    % now create a time series of integrated allowances
+%    % from 2020:2100
+%
+%    t1 = 2020; t2 = 2100;
+%    Aint = cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
+%
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 17:57:23 EDT 2015
 
 defval('N0',.01);
 %defval('poissonL',365.25*24*.01); % top 1% of hourlies
