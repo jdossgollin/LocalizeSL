@@ -15,6 +15,8 @@ Please cite that paper when using any results generated with this code.
 
 ## Overview
 
+This code requires MATLAB with the Statistics Toolbox.
+
 This MATLAB code is intended to help end-users who wish to work with the sea-level rise projections of Kopp et al. (2014) in greater detail than provided by the supplementary tables accompanying that table but without re-running the full global analysis using the supplementary code accompanying the paper. Key functionality these routines provide include:
 
 1. Local sea-level rise projections at decadal time points and arbitrary quantiles

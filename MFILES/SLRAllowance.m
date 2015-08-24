@@ -21,7 +21,8 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %     beta: degree of confidence (1-beta is weight put on 99.9th percentile of samps)
 %     MHHW: If specified, assume exceedances below threshold
 %           follow a Gumbel distribution, with poissonL exceedances
-%           at threshold and MHHW exceedances at z = 0.
+%           at threshold and MHHW exceedances at z = 0 (e.g., 365.25
+%           for 1 flood per day at z = 0).
 %
 %  OUTPUTS
 %

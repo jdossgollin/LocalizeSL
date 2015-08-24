@@ -48,7 +48,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %    threshold = 0.5148;
 %    scale = 0.1285; % GPD scale
 %    shape = 0.1879; % GPD shape
-%    AEP10pt = 1.111; % 10% AEP
+%    AEP10pt = 1.111; % height of 10% AEP flood
 %    
 %    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
 %             LocalizeStoredProjections(selectedSite,corefile,1);
