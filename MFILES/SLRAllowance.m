@@ -42,12 +42,12 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %    lambda = 2.8116; % Poisson Lambda
 %    
 %    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
-%             LocalizeStoredProjections(selectedS[Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scale,shape,poissonL,beta,MHHW)ite,corefile,1);
+%             LocalizeStoredProjections(selectedSite,corefile,1);
 %    samps=[zeros(size(sampslocrise{1,1},1),1) ...
 %           sampslocrise{1,1}]/1000; % add base yr, convert to meters
 %    samps=bsxfun(@min,samps,quantile(samps,.999));  
 %                % truncate samples viewed as physically implausible
-%    targyears = [2000 targ[Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scale,shape,poissonL,beta,MHHW)years]; % add base year
+%    targyears = [2000 targyears]; % add base year
 %
 %
 %    N0 = 0.01; % we will calculate allowances for the current 1% level
