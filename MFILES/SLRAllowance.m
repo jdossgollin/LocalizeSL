@@ -61,7 +61,7 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %    % from 2020:2100
 %
 %    t1 = 2020; t2 = 2100;
-%    Aint = cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
+%    Aint = cumsum(interp1(targyears,Ainst,t1:t2))./([t1:t2]-t1+1);
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 17:57:23 EDT 2015
 
