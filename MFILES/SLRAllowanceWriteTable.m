@@ -1,4 +1,4 @@
-function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold,scale,shape,lambda,N0s,betas,endyear,sitename)
+function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold,scale,shape,lambda,N0s,betas,endyear,yearspacing,sitename)
 
 % [A,z0,lambda]=SLRAllowanceOutput(filename,samps,targyears,threshold
 %               scale,shape,lambda,[N0s],[betas],[endyear],[sitename])
@@ -25,6 +25,9 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
 %     betas: beta values for Limited Degree of Confidence (LDC) allowances
 %            (default: [1 .99 .95 .9 .67 .5 0])
 %     endyear: end year for allowances (default: max(targyears))
+%     yearspacing: spacing between years outputted in the table
+%                  (default is 1, so that it is very easy to take the
+%                   average over a time period of interest)
 %     sitename: full name of site
 %
 % OUTPUTS:
@@ -52,7 +55,7 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
 %    targyears = [2000 targyears]; % add base year
 %      
 %    [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps, ...
-%            targyears,threshold,scale,shape,[0.1 AEP10pt],[],[],[],...
+%            targyears,threshold,scale,shape,[0.1 AEP10pt],[],[],[],[],...
 %            'New York City');
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 22:15:01 EDT 2015
@@ -62,6 +65,7 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
     defval('endyear',max(targyears));
     defval('betas',[1 .99 .95 .9 .67 .5 0]);
     defval('N0s',[.01 .1 .002]);
+    defval('yearspacing',1);
 
     logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
 
@@ -73,7 +77,7 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
     
     %%%
     
-    workyears=targyears(1):endyear;
+    workyears=targyears(1):yearspacing:endyear;
     
     fid = fopen([filename '.tsv'],'w');
     fprintf(fid,'Instantaneous sea-level rise allowances\n');
@@ -81,7 +85,10 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
     fprintf(fid,'\n');
     
     fprintf(fid,'All allowances are instantaneous allowances by year.\n');
-    fprintf(fid,'For integrated allowances, take the mean over the years of interest.\n');
+    fprintf(fid,'For integrated allowances, take the mean over the annual values over the years of interest.\n');
+    if yearspacing~=1
+        fprintf(fid,'(Note that you should interpolate to annual values before averaging.)\n');
+    end
     fprintf(fid,'\n');
     
     fprintf(fid,'beta\tN0');
