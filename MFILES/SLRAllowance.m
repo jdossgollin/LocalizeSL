@@ -18,7 +18,11 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %               alternatively, provide a pair of [N ht]
 %               and will calculate poissonL
 %               (e.g., for 1% flood of 2000 mm, [0.01 2000])
-%     beta: degree of confidence (1-beta is weight put on 99.9th percentile of samps)
+%     beta: degree of confidence (1-beta is weight put
+%           on 99.9th percentile of samps). Alternatively, if
+%           beta > 0, -beta is the degree of confidence in the PDF
+%           and 1+beta is the weight put on the possibility
+%           of no sea-level rise.
 %     MHHW: If specified, assume exceedances below threshold
 %           follow a Gumbel distribution, with poissonL exceedances
 %           at threshold and MHHW exceedances at z = 0 (e.g., 365.25
@@ -63,7 +67,7 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %    t1 = 2020; t2 = 2100;
 %    Aint = cumsum(interp1(targyears,Ainst,t1:t2))./([t1:t2]-t1+1);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 17:57:23 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 21:13:01 EDT 2015
 
 defval('N0',.01);
 %defval('poissonL',365.25*24*.01); % top 1% of hourlies
@@ -125,10 +129,20 @@ for ttt=1:size(samps,2)
 
     %    mx2 = min(max(samps(:,ttt)),max(mx,mx-(z0-threshold-max(samps(:,ttt)))));
     mx2 = min(max(samps(:,ttt)),min(mx-(z0-threshold-max(samps(:,ttt)))));
-    EN = @(A) checkExpectedN(logN,z0-threshold + A - samps(:,ttt));
-    EN999 = @(A) checkExpectedN(logN,z0-threshold+A-SLR999(ttt));
-    Ainst(ttt) = fminbnd(@(A) abs( log(beta*EN(A)+(1-beta)*EN999(A))-log(N0)),0,mx2,optimset('maxfunevals',20000));
-    expectedN(ttt) = (beta*EN(Ainst(ttt))+(1-beta)*EN999(Ainst(ttt)));
+    EN = @(A) checkExpectedN(logN,z0-threshold + A - samps(:,ttt)); % expected number under PDF samples by samps
+    EN999 = @(A) checkExpectedN(logN,z0-threshold+A-SLR999(ttt)); % expected number under 99.9th percentile SLR
+    EN0 = @(A) checkExpectedN(logN,z0-threshold+A); % expected number under no SLR
+    
+    if beta>=0
+        Ainst(ttt) = fminbnd(@(A) abs( log(beta*EN(A)+(1-beta)*EN999(A))-log(N0)),0,mx2,optimset('maxfunevals',20000));
+        expectedN(ttt) = (beta*EN(Ainst(ttt))+(1-beta)*EN999(Ainst(ttt)));
+    else
+        % if beta < 0, assume LDC is with respect to optimistic scenario
+        wbeta=-beta;
+        Ainst(ttt) = fminbnd(@(A) abs( log(wbeta*EN(A)+(1-wbeta)*EN0(A))-log(N0)),0,mx2,optimset('maxfunevals',20000));
+        expectedN(ttt) = (wbeta*EN(Ainst(ttt))+(1-wbeta)*EN0(Ainst(ttt)));
+    end
+    
     if (abs(expectedN(ttt)-N0)/N0)>.01
             Ainst(ttt)=NaN;
     end
