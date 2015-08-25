@@ -67,87 +67,91 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %    t1 = 2020; t2 = 2100;
 %    Aint = cumsum(interp1(targyears,Ainst,t1:t2))./([t1:t2]-t1+1);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 21:13:01 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Aug 25 09:29:14 EDT 2015
 
-defval('N0',.01);
-%defval('poissonL',365.25*24*.01); % top 1% of hourlies
-defval('poissonL',3.6525); % top 1% of days
-defval('beta',1);
-defval('MHHW',[]);
+    defval('N0',.01);
+    %defval('poissonL',365.25*24*.01); % top 1% of hourlies
+    defval('poissonL',3.6525); % top 1% of days
+    defval('beta',1);
+    defval('MHHW',[]);
 
-% if we're given a tuple instead of lambda, get ready to calibrate it
-docalib = 0;
-if length(poissonL)>1
-    docalib = 1;
-    Nref = poissonL(1);
-    htref = poissonL(2);
-    poissonL = 1;
-end
-
-% if we have a vector, assume it is a vector of samples from a single time point
-
-if prod(size(samps))==length(samps)
-    samps=samps(:);
-end
-
-% define N and calculate z0 that goes with N0
-
-if length(MHHW)>0
-    MHHW=[-threshold MHHW(1)];
-end
-if shape==0
-    logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
-    if docalib
-       scaler = log(Nref)-logN(htref-threshold);
-       poissonL = exp(scaler+log(poissonL));
-       logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+    % if we're given a tuple instead of lambda, get ready to calibrate it
+    docalib = 0;
+    if length(poissonL)>1
+        docalib = 1;
+        Nref = poissonL(1);
+        htref = poissonL(2);
+        poissonL = 1;
     end
-    z0 = -scale*log(N0)/log(poissonL) + threshold;
-else
-    logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
-    if docalib
-       scaler = log(Nref)-logN(htref-threshold);
-       poissonL = exp(scaler+log(poissonL));
-       logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+
+    % if we have a vector, assume it is a vector of samples from a single time point
+
+    if prod(size(samps))==length(samps)
+        samps=samps(:);
     end
-    z0 = ((N0/poissonL)^(-shape)-1) * scale/shape + threshold;
-end
 
-% calculate expected sea-level rise
-ESLR=mean(samps,1);
-SLR999=quantile(samps,.999);
+    % define N and calculate z0 that goes with N0
 
-% find the allowance that minimizes the difference between the expected number
-% of floods with a given allowance and A0
-
-for ttt=1:size(samps,2)
-    if shape>=0
-        mx=max(samps(:));
+    if length(MHHW)>0
+        MHHW=[-threshold MHHW(1)];
+    end
+    if shape==0
+        logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+        if docalib
+            scaler = log(Nref)-logN(htref-threshold);
+            poissonL = exp(scaler+log(poissonL));
+            logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+        end
+        z0 = -scale*log(N0)/log(poissonL) + threshold;
     else
-        mx = -.999*scale/shape;
+        logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+        if docalib
+            scaler = log(Nref)-logN(htref-threshold);
+            poissonL = exp(scaler+log(poissonL));
+            logN = @(z) GPDLogNExceedances(z,poissonL,shape,scale,MHHW);
+        end
+        z0 = ((N0/poissonL)^(-shape)-1) * scale/shape + threshold;
     end
 
-    %    mx2 = min(max(samps(:,ttt)),max(mx,mx-(z0-threshold-max(samps(:,ttt)))));
-    mx2 = min(max(samps(:,ttt)),min(mx-(z0-threshold-max(samps(:,ttt)))));
-    EN = @(A) checkExpectedN(logN,z0-threshold + A - samps(:,ttt)); % expected number under PDF samples by samps
-    EN999 = @(A) checkExpectedN(logN,z0-threshold+A-SLR999(ttt)); % expected number under 99.9th percentile SLR
-    EN0 = @(A) checkExpectedN(logN,z0-threshold+A); % expected number under no SLR
-    
-    if beta>=0
-        Ainst(ttt) = fminbnd(@(A) abs( log(beta*EN(A)+(1-beta)*EN999(A))-log(N0)),0,mx2,optimset('maxfunevals',20000));
-        expectedN(ttt) = (beta*EN(Ainst(ttt))+(1-beta)*EN999(Ainst(ttt)));
-    else
-        % if beta < 0, assume LDC is with respect to optimistic scenario
-        wbeta=-beta;
-        Ainst(ttt) = fminbnd(@(A) abs( log(wbeta*EN(A)+(1-wbeta)*EN0(A))-log(N0)),0,mx2,optimset('maxfunevals',20000));
-        expectedN(ttt) = (wbeta*EN(Ainst(ttt))+(1-wbeta)*EN0(Ainst(ttt)));
-    end
-    
-    if (abs(expectedN(ttt)-N0)/N0)>.01
+    % calculate expected sea-level rise
+    ESLR=mean(samps,1);
+    SLR999=quantile(samps,.999);
+
+    % find the allowance that minimizes the difference between the expected number
+    % of floods with a given allowance and A0
+
+    for ttt=1:size(samps,2)
+        if shape>=0
+            mx=max(samps(:));
+        else
+            mx = -.999*scale/shape;
+        end
+        
+
+        mx2 = min(max(samps(:,ttt)),min(mx-(z0-threshold-max(samps(:,ttt)))));
+        mn2=min(samps(:,ttt));
+        
+        EN = @(A) checkExpectedN(logN,z0-threshold + A - samps(:,ttt)); % expected number under PDF samples by samps
+        EN999 = @(A) checkExpectedN(logN,z0-threshold+A-SLR999(ttt)); % expected number under 99.9th percentile SLR
+        EN0 = @(A) checkExpectedN(logN,z0-threshold+A); % expected number under no SLR
+        
+        if beta>=0
+            Ainst(ttt) = fminbnd(@(A) abs( log(beta*EN(A)+(1-beta)*EN999(A))-log(N0)),mn2,mx2,optimset('maxfunevals',20000));           
+            expectedN(ttt) = (beta*EN(Ainst(ttt))+(1-beta)*EN999(Ainst(ttt)));
+        else
+            % if beta < 0, assume LDC is with respect to optimistic scenario
+            wbeta=-beta;
+            Ainst(ttt) = fminbnd(@(A) abs( log(wbeta*EN(A)+(1-wbeta)*EN0(A))-log(N0)),mn2,mx2,optimset('maxfunevals',20000));            
+            expectedN(ttt) = (wbeta*EN(Ainst(ttt))+(1-wbeta)*EN0(Ainst(ttt)));
+        end
+        
+        if (abs(expectedN(ttt)-N0)/N0)>.01
             Ainst(ttt)=NaN;
-    end
-end
+        end
 
+    end
+
+    
 end
 
 function EN=checkExpectedN(logN,y)
@@ -158,4 +162,3 @@ function EN=checkExpectedN(logN,y)
         EN=real(EN);
     end
 end
-

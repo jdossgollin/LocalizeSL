@@ -150,8 +150,10 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
                 PlotWithShadedErrors(projs3,[1 0 0 ; 0 0 1],.95,'none',':',[2000 2100]);
                 hl=PlotWithShadedErrors(projs2,[1 0 0 ;0 0 1],.9,'none','-.',[2000 2100]);
                 hl=PlotWithShadedErrors(projs,[1 0 0 ;0 0 1],.7,'-','--',[2000 2100]);
-                ylim([0 2]);
-
+ 
+                sub=find(projs.x<=2100);
+                
+               ylim(.2*[floor(5*min(projs3.y(sub)-projs3.dy(sub,1))) ceil(5*max(projs3.y(sub)+projs3.dy(sub,2)))]);
                 box on; longticks(gca,2);
                 ylabel('Sea level (m)');
                 title(sitelab);
@@ -193,7 +195,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
                 for ii=1:size(M,1)
                     M(ii,ii:(ii+(intperiod-1)))=1/intperiod;
                 end
-                wseries=@(t1,t2,j) (interp1(targyears,Ainst(:,j),t1:t2));
+                wseries=@(t1,t2,j) (interp1(targyears(sub),Ainst(sub,j),t1:t2));
 
                 for jjj=1:length(N0s)
                     plot(startyear:(endyear-intperiod),M*wseries(startyear,endyear,jjj)'); hold on;
