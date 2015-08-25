@@ -74,7 +74,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %    cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 21:23:48 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 22:16:41 EDT 2015
 
     defval('siteshortname','SL');
     defval('sitelab',[]);
@@ -117,7 +117,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 
     if length(ALDC)==0
         for bbb=1:length(betas)
-            ALDC(bbb,:)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25);
+            ALDC(:,bbb)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25);
         end
     end
 
@@ -223,7 +223,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
             elseif curplot == 6
                 % LDC integrated
 
-                integrateallowanceseries=@(t1,t2,b) cumsum(interp1(targyears,ALDC(b,:),t1:t2))./([t1:t2]-t1+1);
+                integrateallowanceseries=@(t1,t2,b) cumsum(interp1(targyears,ALDC(:,b),t1:t2))./([t1:t2]-t1+1);
                 for bbb=1:length(betas)
                     plot(startyear:endyear,integrateallowanceseries(startyear,endyear,bbb)); hold on;
                 end                
