@@ -34,7 +34,7 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Aug 21 18:58:33 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 04 14:01:04 EDT 2015
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
@@ -47,9 +47,9 @@ focussites=focussites(:)';
 
 if focussites==0
     % if request GSL
-    for qqq=1:size(samps,4)
-        sampslocrise{1,qqq} = squeeze(sum(samps(:,:,:,qqq),2)); 
-        sampsloccomponents{1,qqq}=samps(:,:,:,qqq);
+    for qqq=1:length(selectscens)
+        sampslocrise{1,qqq} = squeeze(sum(samps(:,:,:,selectscens(qqq)),2)); 
+        sampsloccomponents{1,qqq}=samps(:,:,:,selectscens(qqq));
     end
     siteids=0;
     sitenames{1}='GSL';
@@ -62,7 +62,7 @@ else
     [ib,ic]=sort(ib); ia=ia(ic); targregions2=targregions2(ic);
     targregions2names=targregionnames(ia);
 
-    [~, ~,~,sampslocrise,sampsloccomponents,cols.colGIA,cols.colOD] =  ProjectLSL(scens(selectscens),targregions(ia),targregionnames(ia),targyears,samps,seeds,targregions,OceanDynRegions,OceanDynYears,OceanDynMean,OceanDynStd,OceanDynN, ThermExpYears, ThermExpMean, ThermExpStd, OceanDynTECorr,  rateprojs,rateprojssd,mergeZOSZOSTOGA,fpsite,quantlevs,colGIC,colGIS,colAIS,colLS,colTE,focussites);
+    [~, ~,~,sampslocrise,sampsloccomponents,cols.colGIA,cols.colOD] =  ProjectLSL(scens(selectscens),targregions(ia),targregionnames(ia),targyears,samps(:,:,:,selectscens),seeds,targregions,OceanDynRegions,OceanDynYears,OceanDynMean(:,:,selectscens),OceanDynStd(:,:,selectscens),OceanDynN(:,:,selectscens), ThermExpYears, ThermExpMean(:,selectscens), ThermExpStd(:,selectscens), OceanDynTECorr,  rateprojs,rateprojssd,mergeZOSZOSTOGA,fpsite,quantlevs,colGIC,colGIS,colAIS,colLS,colTE,focussites);
 
     siteids=focussites;
     for qq=1:length(siteids)
@@ -70,3 +70,4 @@ else
         sitenames{qq}=targregionnames{sub};
     end
 end
+scens=scens(selectscens);
