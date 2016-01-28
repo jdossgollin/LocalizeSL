@@ -1,6 +1,6 @@
-function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls)
+function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls,colrs)
 
-% PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel].[dopooledscens],[subcomp],[labls])
+% PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel],[dopooledscens],[subcomp],[labls],[colrs])
 %
 % Plot variance decomposition of sea-level rise projections.
 %
@@ -9,11 +9,11 @@ function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,s
 % sitesel is the row id of the site of interest in sampslocrise (default: 1)
 % scensel is the sequential id of scenario of interest (default: 1)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jul 16 10:35:10 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jan 28 09:48:58 EST 2016
 
 % variance plots
 
-colrs='rcbgmyrk';
+defval('colrs','rcbgmyrk');
 linew=[1 1 1 1 1 1 1];
 
 defval('dopooledscens',0);
@@ -88,6 +88,7 @@ end
 for i=1:length(labls)		
     u=squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{i},subyears),2));
     vcur=[var(u)./varu0A];
+    vcur(vcur<(1e-9*max(vcur)))=0;
     hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
     vlast=vcur;
 end
