@@ -50,6 +50,7 @@ vlast=zeros(1,length(yrs));
 for i=1:length(labls)		
     u=squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{i},subyears),2));
     vcur=[var(u)]/1e6;
+    vcur(vcur<(1e-9*max(vcur)))=0;
     hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
     vlast=vcur;
 end
