@@ -59,7 +59,7 @@ function [effcurve,testz]=SLRFloodNexpVsLevelCurves(samps,targyears,threshold,sc
 %    mean(interp1(targyears,effcurve,t1:t2))
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sun Aug 23 16:14:51 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 01 15:16:33 EST 2016
 
 defval('siteshortname','SL');
 defval('sitelab',[]);
@@ -68,15 +68,33 @@ defval('startyear',2020);
 defval('endyears',[2050 2100]);
 defval('doplot',1);
 defval('effcurve',[]);
+defval('showuncertainty',0);
+defval('historicaldata',[]);
 
 if exist('params')
     parseFields(params)
 end
 
-logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
+if size(shape,1)>1
+    logN = @(z) GPDELogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
+else
+    logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
+end
+
 if length(effcurve)==0
     for ttt=1:length(targyears)
         effcurve(ttt,:) = real(mean(exp(logN(bsxfun(@minus,testz,samps(:,ttt)))),1));
+    end
+end
+
+if showuncertainty
+    if size(shape,1)>1
+        for iii=1:size(shape,1)
+            logNs = @(z) GPDLogNExceedances(z-threshold,lambda,shape(iii),scale(iii),-threshold);
+            curve0s(iii,:) = real(exp(logNs(testz)));
+        end
+    else
+        curve0s = effcurve(1,:);
     end
 end
 
@@ -92,6 +110,23 @@ if doplot
     hp1(1)=subplot(2,1,1);
 
     iii=1;
+    if showuncertainty
+        if size(shape,1)>1
+            greyc=[.7 .7 .7];
+            plot(testz,quantile(curve0s,.5),'-','Color',greyc);
+            hold on;
+            plot(testz,quantile(curve0s,.167),'--','Color',greyc);
+            plot(testz,quantile(curve0s,.833),'--','Color',greyc);
+        end
+    end
+    
+    if length(historicaldata)>0
+        ct=sum(bsxfun(@gt,historicaldata,testz))/(length(historicaldata)/365.25);
+        subct=find(diff(ct)<0);
+        subct=intersect(subct,find(testz>threshold));
+        plot(testz(subct),ct(subct),'ys');
+    end
+    
     hl(iii)=plot(testz,exp(logN(testz)),'k-');
     legstr{iii}='N';
     iii=iii+1; hold on;
@@ -130,7 +165,7 @@ if doplot
     xlabel('meters'); ylabel('effective annual expected');
 
 end
-    
+
 function parseFields(params)
 
 flds=fieldnames(params);
