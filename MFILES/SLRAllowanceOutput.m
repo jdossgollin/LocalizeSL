@@ -104,7 +104,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
     if length(Ainst)==0
         for rrr=1:length(N0s)
 
-            [Ainst(:,rrr),z0(rrr),ESLR,lambda,expectedN(:,rrr)]=SLRAllowance(samps,N0s(rrr),threshold,scale,shape,lambda,[],365.25);
+            [Ainst(:,rrr),z0(rrr),ESLR,lambda,expectedN(:,rrr)]=SLRAllowance(samps,N0s(rrr),threshold,scale,shape,lambda,[],365.25/2);
 
         end
     else
@@ -117,7 +117,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 
     if length(ALDC)==0
         for bbb=1:length(betas)
-            ALDC(:,bbb)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25);
+            ALDC(:,bbb)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25/2);
         end
     end
 

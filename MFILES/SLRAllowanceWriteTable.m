@@ -71,7 +71,7 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
 
     for bbb=1:length(betas)
         for rrr=1:length(N0s)
-            [A(:,rrr,bbb),z0(rrr),~,lambda]=SLRAllowance(samps,N0s(rrr),threshold,scale,shape,lambda,betas(bbb),365.25);
+            [A(:,rrr,bbb),z0(rrr),~,lambda]=SLRAllowance(samps,N0s(rrr),threshold,scale,shape,lambda,betas(bbb),365.25/2);
         end
     end
     

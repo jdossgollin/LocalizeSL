@@ -25,7 +25,7 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %           of no sea-level rise.
 %     MHHW: If specified, assume exceedances below threshold
 %           follow a Gumbel distribution, with poissonL exceedances
-%           at threshold and MHHW exceedances at z = 0 (e.g., 365.25
+%           at threshold and MHHW exceedances at z = 0 (e.g., 365.25/2
 %           for 1 flood per day at z = 0).
 %
 %  OUTPUTS
@@ -56,7 +56,7 @@ function [Ainst,z0,ESLR,poissonL,expectedN]=SLRAllowance(samps,N0,threshold,scal
 %
 %    N0 = 0.01; % we will calculate allowances for the current 1% level
 %    beta = 0.95; % 95% confidence in SLR PDF, 5% extra wt to worst case
-%    MHHW = 365.25; % 365.25 floods/year for z = 0
+%    MHHW = 365.25/2; % 365.25/2 floods/year for z = 0
 %
 %    [Ainst,z0,ESLR]=SLRAllowance(samps,N0, ...
 %    threshold,scale,shape,lambda,beta,MHHW);
