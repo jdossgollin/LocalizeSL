@@ -18,7 +18,7 @@ function y = GPDLogNExceedances(z,lambda,shape,scale,MHHW)
 % the value of exceedances at z = MHHW(1); otherwise, will default
 % to 365.25.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Aug 22 17:56:33 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 01 08:37:37 EST 2016
 
 defval('MHHW',[]);
 
@@ -44,7 +44,7 @@ if length(MHHW)>=1
     if length(MHHW)>=2
         MHHWfreq=MHHW(2);
     else
-        MHHWfreq=365.25;
+        MHHWfreq=365.25/2;
     end  
     y(sub) = log(lambda)+(log(MHHWfreq)-log(lambda))*z0(sub)/MHHW(1);
 end
