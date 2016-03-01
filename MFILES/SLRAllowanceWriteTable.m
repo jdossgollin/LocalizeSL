@@ -58,7 +58,7 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
 %            targyears,threshold,scale,shape,[0.1 AEP10pt],[],[],[],[],...
 %            'New York City');
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 22:15:01 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 01 15:55:17 EST 2016
 
     defval('filename','allowances');
     defval('sitename',[]);
@@ -66,8 +66,6 @@ function [A,z0,lambda]=SLRAllowanceWriteTable(filename,samps,targyears,threshold
     defval('betas',[1 .99 .95 .9 .67 .5 0]);
     defval('N0s',[.01 .1 .002]);
     defval('yearspacing',1);
-
-    logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
 
     for bbb=1:length(betas)
         for rrr=1:length(N0s)

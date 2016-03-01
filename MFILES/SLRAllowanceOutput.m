@@ -99,8 +99,6 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
     params.endyear=endyear;
     params.doplot=doplot;
 
-    logN = @(z) GPDLogNExceedances(z-threshold,lambda,shape,scale,-threshold); 
-
     if length(Ainst)==0
         for rrr=1:length(N0s)
 
