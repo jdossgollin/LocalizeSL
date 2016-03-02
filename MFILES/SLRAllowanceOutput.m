@@ -74,7 +74,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %    cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Aug 24 22:16:41 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 02 09:16:43 EST 2016
 
     defval('siteshortname','SL');
     defval('sitelab',[]);
