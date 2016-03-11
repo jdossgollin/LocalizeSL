@@ -1,21 +1,23 @@
-function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,threshold,scale,shape,lambda,sitelab,shortname,params)
+function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999,integratecurve,sitelab,params)
 
-% [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,threshold,scale,shape,lambda,[sitelab],[shortname],[params])
+% [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=
+%    SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999,
+%    integratecurve,[sitelab],[params])
 %
 % Output a figure plotting sea level and various flavors of SLR allowances.
+% It takes a variety of parameters outputted by SLRFloodNexpVsLevelCurves.
 %
 % INPUTS:
 %
 %     samps: matrix of SLR samples (rows: samples, cols: time)
 %     targyears: year identifiers for columns on samps
-%     threshold: GPD threshold
-%     scale: GPD scale factor
-%     shape: GPD shape factor
-%     lambda: mean number of exceedances per year 
-%             alternatively, provide a pair of [N ht] and will calculate lambda
-%             (e.g., for 1% flood of 2000 mm, [0.01 2000])
+%     effcurve: expected number of floods of different heights (rows: years as
+%               in targyears; cols: heights as specified in testz)
+%     testz: heights for effcurve
+%     histcurve: historical curve for testz (expected)
+%     effcurve999: expected number of floods under 99.9th percentile SLR
+%     integratecurve: function (curve,t1,t2) to integrate effcurve
 %     sitelab: full name of site
-%     shortname: short name of site (for filename; no spaces)
 %     params: an optional structure with fields setting several parameters
 %         - startyear: start year for integrated allowances (default: 2020) 
 %         - endyear: end year for allowances (default: 2100)
@@ -30,9 +32,6 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %                   1 - SLR; 2 - Instantaneous; 3 - Integrated, fixed start
 %                   4 - Integrated, fixed part; 5 - LDC, Instantaneous
 %                   6 - LDC, Integrated
-%         - Ainst and ALDC: if passed, will skip calculation of these and use
-%                           as specified (if Ainst specified, will not calculate
-%                           z0 or lambda)
 %
 % OUTPUTS:
 %
@@ -40,52 +39,50 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
 %            and columns to N0s
 %     ALDC: Instantaneous allowances with LDC for N0 = N0s(1); rows correspond 
 %           to years and columns to betas
+%     ADLfromstart: Design-life allowance with fixed starting point
+%     ADLfp: Design-life allowance with fixed length
+%     ADLLDCfromstart: LDC design-life allowance with fixed starting point
+%     ADLendyears: End years for the fixed period design-life allowances
 %     z0: height of flood level for each N0 without sea-level rise
-%     lambda: mean number of exceedances per year for Poisson-GPD
 %     hp: subplot handles
-%     params: parameter values
 %
 % EXAMPLE:
 %
-%    shortname='NYC';
-%    selectedSite = 12; %PSMSL ID for New York City
-%    threshold = 0.5148;
-%    scale = 0.1285; % GPD scale
-%    shape = 0.1879; % GPD shape
-%    AEP10pt = 1.111; % height of 10% AEP flood
-%    
-%    [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
-%             LocalizeStoredProjections(selectedSite,corefile,1);
-%    samps=[zeros(size(sampslocrise{1,1},1),1) ...
-%           sampslocrise{1,1}]/1000; % add base year and convert to meters
-%    samps=bsxfun(@min,samps,quantile(samps,.999));  
-%                      % truncate samples viewed as physically implausible
-%    targyears = [2000 targyears]; % add base year
+%       sitelab='Boston';
+%       filename=['allowance-' sitelab];
+%       selectedSite = 235; %PSMSL ID for Boston
+%       threshold = 0.6214; % GPD threshold
+%       scale = 0.1109; % GPD scale
+%       shape = 0.0739; % GPD shape
+%       lambda = 2.5699; % Poisson Lambda
+%  
+%       [sampslocrise,~,siteids,sitenames,targyears,scens,cols] = ...
+%                LocalizeStoredProjections(selectedSite,corefile,1);
+%       samps=[zeros(size(sampslocrise{1,1},1),1) ...
+%              sampslocrise{1,1}]/1000; % add base yr, convert to meters
+%       samps=bsxfun(@min,samps,quantile(samps,.999));
+%                   % truncate samples viewed as physically implausible
+%       targyears = [2000 targyears]; % add base year
+%  
+%       pm.doplot=0;
+%       [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integratecurve]= ...
+%           SLRFloodNexpVsLevelCurves(samps,targyears,threshold, ...
+%           scale,shape,lambda,sitelab,pm);
 %      
-%    clf;
-%    [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps, ...
-%            targyears,threshold,scale,shape,[0.1 AEP10pt], ...
-%            sitenames{1},shortname);
+%       clf;
+%       [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=...
+%           SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999, ...
+%           integratecurve,sitelab)
 %
-% Note that, to calculate a time series of integrated sea-level rise allowances
-% starting at t1 and for years running up to t2 from a vector of instantaneous
-% allowaces Ainst(:,j), simply run:
-%
-%    cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
-%
-%
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 02 09:16:43 EST 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 16:07:03 EST 2016
 
-    defval('siteshortname','SL');
-    defval('sitelab',[]);
+    defval('sitelab','');
     defval('startyear',2020);
     defval('endyear',2100);
     defval('intperiod',30);
     defval('betas',[0 .5 .67 .9 .95 .99 1]);
     defval('N0s',[.01 .1 .002]);
     defval('doplot',1:6);
-    defval('Ainst',[]);
-    defval('ALDC',[]);
 
     if exist('params')
         parseFields(params)
@@ -98,31 +95,32 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
     params.startyear=startyear;
     params.endyear=endyear;
     params.doplot=doplot;
-
-    if length(Ainst)==0
-        for rrr=1:length(N0s)
-
-            [Ainst(:,rrr),z0(rrr),ESLR,lambda,expectedN(:,rrr)]=SLRAllowance(samps,N0s(rrr),threshold,scale,shape,lambda,[],365.25/2);
-
-        end
-    else
-        z0=[]; lambda=[];
-    end
-
+    
     for rrr=1:length(N0s)
+        [Ainst(:,rrr),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,effcurve,N0s(rrr));
         N0legstr{rrr}=[sprintf('%0.1f',100*N0s(rrr)) '%'];
-    end
-
-    if length(ALDC)==0
-        for bbb=1:length(betas)
-            ALDC(:,bbb)=SLRAllowance(samps,N0s(1),threshold,scale,shape,lambda,betas(bbb),365.25/2);
+        
+        ADLendyears=(startyear+1):endyear;
+        for ttt=1:length(ADLendyears)
+            ADLfromstart(ttt,rrr)=SLRAllowanceFromCurve(testz,histcurve,integratecurve(effcurve,startyear,ADLendyears(ttt)),N0s(rrr));
+           end       
+        ADLfpyearsubstart=find((targyears+intperiod)<=endyear);
+        for ttt=1:length(ADLfpyearsubstart)
+            ADLfp(ttt,rrr)=SLRAllowanceFromCurve(testz,histcurve,integratecurve(effcurve,targyears(ADLfpyearsubstart(ttt)),targyears(ADLfpyearsubstart(ttt))+intperiod),N0s(rrr));
         end
+        
+
     end
 
     for bbb=1:length(betas)
+        [ALDC(:,bbb),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,betas(bbb)*effcurve+(1-betas(bbb))*effcurve999,N0s(1));
         betalegstr{bbb}=sprintf('\\beta = %0.2f',betas(bbb));
-    end
+        
+        for ttt=1:length(ADLendyears)
+            ADLLDCfromstart(ttt,bbb)=SLRAllowanceFromCurve(testz,histcurve,integratecurve(betas(bbb)*effcurve+(1-betas(bbb))*effcurve999,startyear,ADLendyears(ttt)),N0s(1));
+            end
 
+    end
 
     %%%
     if sum(doplot)>0
@@ -148,10 +146,10 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
                 PlotWithShadedErrors(projs3,[1 0 0 ; 0 0 1],.95,'none',':',[2000 2100]);
                 hl=PlotWithShadedErrors(projs2,[1 0 0 ;0 0 1],.9,'none','-.',[2000 2100]);
                 hl=PlotWithShadedErrors(projs,[1 0 0 ;0 0 1],.7,'-','--',[2000 2100]);
- 
+                
                 sub=find(projs.x<=2100);
                 
-               ylim(.2*[floor(5*min(projs3.y(sub)-projs3.dy(sub,1))) ceil(5*max(projs3.y(sub)+projs3.dy(sub,2)))]);
+                ylim(.2*[floor(5*min(projs3.y(sub)-projs3.dy(sub,1))) ceil(5*max(projs3.y(sub)+projs3.dy(sub,2)))]);
                 box on; longticks(gca,2);
                 ylabel('Sea level (m)');
                 title(sitelab);
@@ -172,32 +170,22 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
                 end
                 
             elseif curplot == 3
-                % integrated allowances starting in startyeart
+                % design-life allowances starting in startyear
 
-                integrateallowanceseries=@(t1,t2,j) cumsum(interp1(targyears,Ainst(:,j),t1:t2))./([t1:t2]-t1+1);
-                for jjj=1:length(N0s)
-                    plot(2020:2100,integrateallowanceseries(startyear,endyear,jjj)); hold on;
-                end                
-
+                plot(ADLendyears,ADLfromstart);
+                xlim([startyear endyear]);
                 ylabel('m');
+
                 title(['Integrated starting ' num2str(startyear)]);
-               
+                
                 if ~shownNleg
                     legend(N0legstr,'Location','Northwest');
                     shownNleg = 1;
                 end
                 
             elseif curplot == 4
-                % integrated for intperiod years, starting arbitrarily
-                M = zeros((endyear-intperiod-startyear+1),(endyear-startyear)+1);
-                for ii=1:size(M,1)
-                    M(ii,ii:(ii+(intperiod-1)))=1/intperiod;
-                end
-                wseries=@(t1,t2,j) (interp1(targyears(sub),Ainst(sub,j),t1:t2));
-
-                for jjj=1:length(N0s)
-                    plot(startyear:(endyear-intperiod),M*wseries(startyear,endyear,jjj)'); hold on;
-                end                
+                plot(targyears(ADLfpyearsubstart),ADLfp);
+                xlim([startyear endyear-intperiod]);
                 ylabel('m');
                 title(['Integrated ' num2str(intperiod) ' years']);
 
@@ -223,10 +211,8 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
             elseif curplot == 6
                 % LDC integrated
 
-                integrateallowanceseries=@(t1,t2,b) cumsum(interp1(targyears,ALDC(:,b),t1:t2))./([t1:t2]-t1+1);
-                for bbb=1:length(betas)
-                    plot(startyear:endyear,integrateallowanceseries(startyear,endyear,bbb)); hold on;
-                end                
+                plot(ADLendyears,ADLLDCfromstart);
+                xlim([startyear endyear]);
                 ylabel('m');
                 title(['Integrated starting ' num2str(startyear) ' (' sprintf('%0.1f',N0s(1)*100) '%)']);
 
@@ -234,7 +220,7 @@ function [Ainst,ALDC,z0,lambda,hp,params]=SLRAllowanceOutput(samps,targyears,thr
                     legend(betalegstr,'Location','Northwest');
                     shownbetaleg = 1;
                 end
-            
+                
             end
         end
         
