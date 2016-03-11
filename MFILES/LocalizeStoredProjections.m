@@ -59,6 +59,10 @@ if focussites==0
 else
     
     [targregions2,ia,ib]=intersect(targregions,focussites);
+    if length(targregions2)==0
+        error(['No matching sites found!']);
+    end
+    
     [ib,ic]=sort(ib); ia=ia(ic); targregions2=targregions2(ic);
     targregions2names=targregionnames(ia);
 
