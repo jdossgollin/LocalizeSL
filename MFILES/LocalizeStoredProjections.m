@@ -34,7 +34,7 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 04 14:01:04 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 16:39:52 EST 2016
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
