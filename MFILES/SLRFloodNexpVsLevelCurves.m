@@ -59,8 +59,8 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 15:55:07 EST 2016
-    
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 17:56:48 EST 2016
+
 defval('sitelab',[]);
 defval('testz',0:.01:10);
 defval('startyear',2020);
@@ -163,7 +163,7 @@ if doplot
     ylim([1e-4 10]);
 
     title(sitelab);
-    xlabel('meters'); ylabel('effective annual expected');
+    xlabel('meters'); ylabel('expected events/year');
 
 end
 

@@ -19,7 +19,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
 %     integratecurve: function (curve,t1,t2) to integrate effcurve
 %     sitelab: full name of site
 %     params: an optional structure with fields setting several parameters
-%         - startyear: start year for integrated allowances (default: 2020) 
+%         - startyear: start year for design-life allowances (default: 2020) 
 %         - endyear: end year for allowances (default: 2100)
 %         - intperiod: integration period (in yrs) for allowances
 %                      with variable start (default: 30)
@@ -29,9 +29,9 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
 %                will be used for the (LDC allowances) (default: [.01 .1 .002])
 %         - doplot: which plots to generate; set to 0 for none
 %                   (default: 1:6)
-%                   1 - SLR; 2 - Instantaneous; 3 - Integrated, fixed start
-%                   4 - Integrated, fixed part; 5 - LDC, Instantaneous
-%                   6 - LDC, Integrated
+%                   1 - SLR; 2 - Instantaneous; 3 - Design-life, fixed start
+%                   4 - Design-life, fixed part; 5 - LDC, Instantaneous
+%                   6 - LDC, Design-life
 %
 % OUTPUTS:
 %
@@ -74,7 +74,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
 %           SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999, ...
 %           integratecurve,sitelab)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 17:06:29 EST 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 17:56:57 EST 2016
 
     defval('sitelab','');
     defval('startyear',2020);
@@ -176,7 +176,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
                 xlim([startyear endyear]);
                 ylabel('m');
 
-                title(['Integrated starting ' num2str(startyear)]);
+                title(['Design life starting ' num2str(startyear)]);
                 
                 if ~shownNleg
                     legend(N0legstr,'Location','Northwest');
@@ -187,7 +187,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
                 plot(targyears(ADLfpyearsubstart),ADLfp);
                 xlim([startyear endyear-intperiod]);
                 ylabel('m');
-                title(['Integrated ' num2str(intperiod) ' years']);
+                title(['Design life ' num2str(intperiod) ' years']);
 
 
                 if ~shownNleg
@@ -209,12 +209,12 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
                 end
                 
             elseif curplot == 6
-                % LDC integrated
+                % LDC Design-life
 
                 plot(ADLendyears,ADLLDCfromstart);
                 xlim([startyear endyear]);
                 ylabel('m');
-                title(['Integrated starting ' num2str(startyear) ' (' sprintf('%0.1f',N0s(1)*100) '%)']);
+                title(['Design life starting ' num2str(startyear) ' (' sprintf('%0.1f',N0s(1)*100) '%)']);
 
                 if ~shownbetaleg
                     legend(betalegstr,'Location','Northwest');
