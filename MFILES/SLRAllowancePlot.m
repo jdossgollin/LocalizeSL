@@ -123,7 +123,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
         if betas(bbb)>=0
             betalegstr{bbb}=sprintf('\\beta = %0.2f',betas(bbb));
         else
-            betalegstr{bbb}=sprintf('\\beta' = %0.2f',-betas(bbb));
+            betalegstr{bbb}=sprintf('\\beta''' = %0.2f',-betas(bbb));
         end
         
         
