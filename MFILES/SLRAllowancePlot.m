@@ -74,7 +74,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
 %           SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999, ...
 %           integratecurve,sitelab)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 15 17:19:33 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 15 17:29:08 EDT 2016
 
     defval('sitelab','');
     defval('startyear',2020);
@@ -123,7 +123,8 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
         if betas(bbb)>=0
             betalegstr{bbb}=sprintf('\\beta = %0.2f',betas(bbb));
         else
-            betalegstr{bbb}=sprintf('\\beta''' = %0.2f',-betas(bbb));
+            quote='''';
+            betalegstr{bbb}=sprintf(['\\beta' quote ' = %0.2f'],-betas(bbb));
         end
         
         
