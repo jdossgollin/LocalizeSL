@@ -61,8 +61,8 @@ function [A,ADL,z0]=SLRAllowanceWriteTable(filename,targyears,effcurve,testz,his
 %            effcurve,testz,histcurve,effcurve999,integratecurve, ...
 %            [],[],2100,sitelab);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 16:04:42 EST 2016
-
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 15 17:09:49 EDT 2016
+    
     defval('filename','allowances');
     defval('sitename','');
     defval('endyear',max(targyears));
@@ -80,12 +80,18 @@ function [A,ADL,z0]=SLRAllowanceWriteTable(filename,targyears,effcurve,testz,his
     end
     
     for bbb=1:length(betas)
+        if betas(bbb)>=0
+            weightedcurve=betas(bbb)*effcurve+(1-betas(bbb))*effcurve999;
+        else
+            weightedcurve=bsxfun(@plus,abs(betas(bbb))*effcurve,(1-abs(betas(bbb)))*histcurve);
+        end
+
         for rrr=1:length(N0s)
-            [A(:,rrr,bbb),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,betas(bbb)*effcurve+(1-betas(bbb))*effcurve999,N0s(rrr));
+            [A(:,rrr,bbb),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,weightedcurve,N0s(rrr));
             if doADL
                 for ttt=1:length(subyears)
                     for sss=(ttt+1):length(subyears)
-                        [ADL(rrr,bbb,ttt,sss),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,integratecurve(betas(bbb)*effcurve+(1-betas(bbb))*effcurve999,targyears(subyears(ttt)),targyears(subyears(sss))),N0s(rrr));
+                        [ADL(rrr,bbb,ttt,sss),z0(rrr)]=SLRAllowanceFromCurve(testz,histcurve,integratecurve(weightedcurve,targyears(subyears(ttt)),targyears(subyears(sss))),N0s(rrr));
                     end
                     
                 end
