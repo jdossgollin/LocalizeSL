@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 18 18:13:30 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 18 18:22:36 EDT 2016
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -90,9 +90,12 @@ end
 if length(effcurve)==0
     for ttt=1:length(targyears)
         effcurve(ttt,:) = real(mean(exp(logN(bsxfun(@minus,testz,samps(:,ttt)))),1));
-        effcurveESLR(ttt,:)=exp(logN(testz-ESLR(ttt)));
-        effcurve999(ttt,:)=exp(logN(testz-SLR999(ttt)));
     end
+end
+
+for ttt=1:length(targyears)
+    effcurveESLR(ttt,:)=exp(logN(testz-ESLR(ttt)));
+    effcurve999(ttt,:)=exp(logN(testz-SLR999(ttt)));
 end
 
 if size(shape,1)>1
@@ -112,7 +115,7 @@ integratecurve=@(curve,t1,t2) trapz(t1:t2,interp1(targyears,curve,t1:t2))./(t2-t
 
 if doplot
 
-    hp1(1)=subplot(2,1,1);
+    hp1(1)=subplot(2,1,1); hold on;
 
     iii=1;
     if showuncertainty
