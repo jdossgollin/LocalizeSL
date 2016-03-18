@@ -74,7 +74,7 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
 %           SLRAllowancePlot(samps,targyears,effcurve,testz,histcurve,effcurve999, ...
 %           integratecurve,sitelab)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 15 17:54:45 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 18 18:32:31 EDT 2016
 
     defval('sitelab','');
     defval('startyear',2020);
@@ -211,12 +211,17 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
                 %  LDC instantaneous
                 
                 clear hl1 hl2;
-                sub=find(betas>=0);
-                hl1=plot(targyears,ALDC(:,sub));
-                hold on;
-                sub=find(betas<0);
-                hl2=plot(targyears,ALDC(:,sub),'--');
+                sub=find(betas>=0); hl1=[];
+                if length(sub)>0
+                    hl1=plot(targyears,ALDC(:,sub));
+                end
                 
+                hold on;
+                sub=find(betas<0); hl2=[];
+                if length(sub)>0
+                    hl2=plot(targyears,ALDC(:,sub),'--');
+                end
+                                
                 xlim([targyears(1) endyear]);
                 ylabel('m');
                 title(['Instantaneous (' sprintf('%0.1f',N0s(1)*100) '%)']);
@@ -229,18 +234,24 @@ function [Ainst,ALDC,ADLfromstart,ADLfp,ADLLDCfromstart,ADLendyears,z0,hp]=SLRAl
             elseif curplot == 6
                 % LDC Design-life
 
-                sub=find(betas>=0);
-                plot(ADLendyears,ADLLDCfromstart(:,sub));
+                sub=find(betas>=0); hl1=[];
+                if length(sub)>0
+                    hl1=plot(ADLendyears,ADLLDCfromstart(:,sub));
+                end
+                
                 hold on;
-                sub=find(betas<0);
-                plot(ADLendyears,ADLLDCfromstart(:,sub),'--');
+                sub=find(betas<0); hl2=[];
+                if length(sub)>0
+                    hl2=plot(ADLendyears,ADLLDCfromstart(:,sub),'--');
+                end
+                
                 
                 xlim([startyear endyear]);
                 ylabel('m');
                 title(['Design life starting ' num2str(startyear) ' (' sprintf('%0.1f',N0s(1)*100) '%)']);
 
                 if ~shownbetaleg
-                    legend(betalegstr,'Location','Northwest');
+                    legend([hl1 ; hl2],betalegstr,'Location','Northwest');
                     shownbetaleg = 1;
                 end
                 
