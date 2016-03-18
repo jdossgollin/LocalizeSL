@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 17:56:48 EST 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 18 18:13:30 EDT 2016
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -72,6 +72,7 @@ defval('historicaldata',[]);
 defval('showESLR',1);
 defval('showeffcurve',1);
 defval('show999',1);
+defval('showinteffcurve',1);
 
 if exist('params')
     parseFields(params)
@@ -160,9 +161,11 @@ if doplot
 
     for qqq=1:length(endyears)
         
-        hl(iii)=plot(testz,integratecurve(effcurve,startyear,endyears(qqq)),[colrs2(qqq) '-']);
-        legstr{iii}=['N_e(' num2str(startyear) ',' num2str(endyears(qqq)) ')'];
-        iii=iii+1;
+        if showinteffcurve
+            hl(iii)=plot(testz,integratecurve(effcurve,startyear,endyears(qqq)),[colrs2(qqq) '-']);
+            legstr{iii}=['N_e(' num2str(startyear) ',' num2str(endyears(qqq)) ')'];
+            iii=iii+1;
+        end
         
     end
 
