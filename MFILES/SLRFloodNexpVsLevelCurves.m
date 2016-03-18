@@ -69,6 +69,9 @@ defval('doplot',1);
 defval('effcurve',[]);
 defval('showuncertainty',0);
 defval('historicaldata',[]);
+defval('showESLR',1);
+defval('showeffcurve',1);
+defval('show999',1);
 
 if exist('params')
     parseFields(params)
@@ -138,14 +141,21 @@ if doplot
     for qqq=1:length(endyears)
         t=find(targyears==endyears(qqq));
         
-        hl(iii)=plot(testz,effcurveESLR(t,:),[colrs1(qqq) '--']);
-        legstr{iii}=['N+E(SL_{' num2str(endyears(qqq)) '})']; iii=iii+1;
-
-        hl(iii)=plot(testz,effcurve(t,:), [colrs1(qqq) '-']);
-        legstr{iii} = ['N_e(' num2str(endyears(qqq)) ')'];  iii=iii+1;
+        if showESLR
+            hl(iii)=plot(testz,effcurveESLR(t,:),[colrs1(qqq) '--']);
+            legstr{iii}=['N+E(SL_{' num2str(endyears(qqq)) '})']; iii=iii+1;
+        end
         
-        hl(iii)=plot(testz,effcurve999(t,:),[colrs1(qqq) ':'] );
-        legstr{iii}=['N+SL_{99.9}(' num2str(endyears(qqq)) ')']; iii=iii+1;
+        if showeffcurve
+            hl(iii)=plot(testz,effcurve(t,:), [colrs1(qqq) '-']);
+            legstr{iii} = ['N_e(' num2str(endyears(qqq)) ')'];  iii=iii+1;
+        end
+        
+        if show999
+            hl(iii)=plot(testz,effcurve999(t,:),[colrs1(qqq) ':'] );
+            legstr{iii}=['N+SL_{99.9}(' num2str(endyears(qqq)) ')']; iii=iii+1;
+        end
+        
     end
 
     for qqq=1:length(endyears)
