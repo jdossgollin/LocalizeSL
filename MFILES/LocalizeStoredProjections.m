@@ -1,7 +1,7 @@
-function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(focussites,storefile,selectscens)
+function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(focussites,storefile,selectscens,substitutep)
 
 % [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
-%          LocalizeStoredProjections(focussites,storefile,[selectscens])
+%          LocalizeStoredProjections(focussites,storefile,[selectscens],[substitutetp])
 %
 % Load stored GSL MC samples and generate local MC samples
 %
@@ -14,6 +14,8 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 %            Kopp et al. 2014
 % selectscens: indices of desired scens (1 = RCP 8.5, 2 = 6.0, 3 = 4.5, 4=2.6)
 %              default = [1 2 3 4]
+% substitutep: structure with alternative values to substitute
+%              for variables imported from storefile
 %
 % OUTPUTS
 % -------
@@ -34,12 +36,16 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 11 16:39:52 EST 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 30 17:10:50 EDT 2016
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
 load(storefile,'scens','targregions','targregionnames','targyears','samps','seeds','OceanDynRegions','OceanDynYears','OceanDynMean','OceanDynStd','OceanDynN','ThermExpYears','ThermExpMean','ThermExpStd','OceanDynTECorr','rateprojs','rateprojssd','mergeZOSZOSTOGA','fpsite','quantlevs','colGIC','colGIS','colAIS','colLS','colTE');
 defval('selectscens',1:4);
+
+if exist('substitutep')
+    parseFields(substitutep);
+end
 
 cols.colGIC=colGIC; cols.colGIS=colGIS; cols.colAIS=colAIS; cols.colLS=colLS; cols.colTE=colTE;
 
@@ -75,3 +81,13 @@ else
     end
 end
 scens=scens(selectscens);
+
+    
+function parseFields(params)
+
+    flds=fieldnames(params);
+    for qqq=1:length(flds)
+        if flds{qqq} 
+            assignin('caller',flds{qqq},params.(flds{qqq}));
+        end
+    end
