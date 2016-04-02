@@ -4,13 +4,12 @@
 % with other projections from Kopp et al. (2014). Assumes each of the ensemble
 % members that meets Deconto-Pollard criteria is of equal probability.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 30 17:58:32 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Apr 01 23:31:22 EDT 2016
 
 selectedSites = [235];
 
 % set up path
 
-addpath(pwd);
 rootdir='~/Dropbox/Code/LocalizeSL';
 IFILES=fullfile(rootdir,'IFILES');
 corefile=fullfile(IFILES,'SLRProjections140523core.mat');
@@ -41,8 +40,8 @@ for preferredEnsemble=1:length(ensembleLab)
 % output revised GSL
 
         quantlevs=[.01 .05 .167 .5 .833 .95 .99 .995 .999];
-        WriteTableDecomposition(sampsGSLcomponents2s{preferredEnsemble,preferredSubset},quantlevs,siteidsGSL,sitenamesGSL,targyears,colsGSL,scensGSL(RDscenmap),['GSLproj_decomp_' preferredEnsembleSetLabel '_']);
-        WriteTableSLRProjection(sampsGSLrise2s{preferredEnsemble,preferredSubset},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL(RDscenmap),['GSLproj_' preferredEnsembleSetLabel '_']);
+        WriteTableDecomposition(sampsGSLcomponents2s{preferredEnsemble,preferredSubset},quantlevs,siteidsGSL,sitenamesGSL,targyears,colsGSL,scensGSL,['GSLproj_decomp_' preferredEnsembleSetLabel '_']);
+        WriteTableSLRProjection(sampsGSLrise2s{preferredEnsemble,preferredSubset},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL,['GSLproj_' preferredEnsembleSetLabel '_']);
 
 %%% now generate local projections
 
