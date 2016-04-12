@@ -1,6 +1,6 @@
 # LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu,u, Sun Feb 14 17:40:51 EST 2016
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sun Feb 14 17:40:51 EST 2016
 
 ## Citation
 
