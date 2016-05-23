@@ -11,9 +11,11 @@ function WriteTableSLRProjectionRate(sampslocrise,quantlevs,siteids,sitenames,ta
 defval('fileprefix','LSLproj_rate_');
 defval('quantlevs',[.01 .05 .167 .5 .833 .95 .99 .995 .999]);
 defval('unitstr','mm/yr above 2000 CE level');
-defval('fstr','%0.1f');
+defval('fstr','%0.2f');
 
 defval('timestep',targyears(2)-targyears(1));
+initialyear=targyears(1)-timestep;
+targyears=[initialyear targyears];
 
 Mdiff=(bsxfun(@minus,targyears',targyears)==0)-(bsxfun(@minus,targyears',targyears)==difftimestep);
 Mdiff=Mdiff(sum(Mdiff,2)==0,:);
@@ -27,7 +29,9 @@ for jjj=1:length(siteids)
         fprintf(fid,'%0.0f-year average rate\n',difftimestep);
         fprintf(fid,'\t %0.6g',quantlevs);
         fprintf(fid,'\n');
-        samps=Mdiff*sampslocrise{jjj,kkk}'; samps=samps';
+        wsamps=sampslocrise{jjj,kkk};
+        wsamps=[zeros(size(wsamps,1),1) wsamps];
+        samps=Mdiff*wsamps'; samps=samps';
         for ttt=1:length(rateyr)
             fprintf(fid,'%0.0f',rateyr(ttt));
             fprintf(fid,['\t' fstr],quantile(samps(:,ttt),quantlevs));

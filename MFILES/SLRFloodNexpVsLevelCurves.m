@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Mar 18 18:22:36 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue May 03 11:39:38 EDT 2016
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -139,8 +139,8 @@ if doplot
     legstr{iii}='N';
     iii=iii+1; hold on;
 
-    colrs1='brg';
-    colrs2='cmy';
+    colrs1='brgcmy';
+    colrs2='cmybrg';
 
     for qqq=1:length(endyears)
         t=find(targyears==endyears(qqq));

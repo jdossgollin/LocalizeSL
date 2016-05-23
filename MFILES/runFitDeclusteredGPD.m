@@ -1,4 +1,4 @@
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 16 11:57:18 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Apr 22 10:50:57 EDT 2016
 
 rootpath='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootpath,'MFILES'));
@@ -70,7 +70,7 @@ for qqq=1:length(tgids)
         % calculate Poission and GPD parameters
         lambdas(qqq)=length(data2)/(length(data)/365.25);
         parmfit(qqq,:) = gpfit(data2);
-        %parmfit_gumbel(qqq,:) = gpfit_fixedshape(data2,0);
+        parmfit_gumbel(qqq,:) = gpfit_forceshape(data2,[],[],0);
         
         
         % calculate 10% and 1% AEP heights
@@ -83,9 +83,9 @@ for qqq=1:length(tgids)
         N01(qqq)=z0(0.01);
  
         % calculate 10% and 1% AEP heights for gumbel
-        %z0_gumbel = @(N0) -parmfit_gumbel(qqq,2)*log(N0)/log(lambdas(qqq)) + threshold;
-        %N10_gumbel(qqq)=z0_gumbel(0.1);
-        %N01_gumbel(qqq)=z0_gumbel(0.01);
+        z0_gumbel = @(N0) -parmfit_gumbel(qqq,2)*log(N0)/log(lambdas(qqq)) + threshold;
+        N10_gumbel(qqq)=z0_gumbel(0.1);
+        N01_gumbel(qqq)=z0_gumbel(0.01);
 
     else
         % oops, couldn't find data file!
@@ -110,7 +110,22 @@ for qqq=1:length(tgids)
         fprintf(fid,'\t%0.0f',NOAA_PSMSLid(sub));
         fprintf(fid,'\t%0.0f',tgids(qqq));
         fprintf(fid,'\t%0.4f',[lambdas(qqq) q99s(qqq) parmfit(qqq,:) N10(qqq) N01(qqq)]);
-        %fprintf(fid,'\t%0.4f',[parmfit_gumbel(qqq,2) N10_gumbel(qqq) N01_gumbel(qqq)]);
+        fprintf(fid,'\n');
+    end
+end
+fclose(fid);
+
+fid=fopen('GPDfits_gumbel.tsv','w');
+fprintf(fid,'Site\tSite (PSMSL Name)\tPSMSL ID\tNOAA Station ID\tlambda\tu\tshape\tscale\tAEP0.1\tAEP0.010\n');
+for qqq=1:length(tgids)
+    sub=find(NOAAids==tgids(qqq));
+    if (~isnan(lambdas(qqq)))&&(length(sub)==1)
+        fprintf(fid,NOAAnames{sub});
+        fprintf(fid,['\t' NOAA_PSMSLname{sub}]);
+        fprintf(fid,'\t%0.0f',NOAA_PSMSLid(sub));
+        fprintf(fid,'\t%0.0f',tgids(qqq));
+        fprintf(fid,'\t%0.4f',[lambdas(qqq) q99s(qqq)]);
+        fprintf(fid,'\t%0.4f',[parmfit_gumbel(qqq,:) N10_gumbel(qqq) N01_gumbel(qqq)]);
         fprintf(fid,'\n');
     end
 end
