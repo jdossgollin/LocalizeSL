@@ -36,11 +36,17 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 30 17:10:50 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue May 31 16:55:12 EDT 2016
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
-load(storefile,'scens','targregions','targregionnames','targyears','samps','seeds','OceanDynRegions','OceanDynYears','OceanDynMean','OceanDynStd','OceanDynN','ThermExpYears','ThermExpMean','ThermExpStd','OceanDynTECorr','rateprojs','rateprojssd','mergeZOSZOSTOGA','fpsite','quantlevs','colGIC','colGIS','colAIS','colLS','colTE');
+if isstruct(storefile)
+    parseFields(storefile);
+    else
+load(storefile,'scens','targregions','targregionnames','targyears','samps','seeds','OceanDynRegions','OceanDynYears','OceanDynMean','OceanDynStd','OceanDynN','ThermExpYears','ThermExpMean', ...
+     'ThermExpStd','OceanDynTECorr','rateprojs','rateprojssd','mergeZOSZOSTOGA','fpsite','quantlevs','colGIC','colGIS','colAIS','colLS','colTE');
+end
+
 defval('selectscens',1:4);
 
 if exist('substitutep')
