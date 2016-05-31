@@ -11,7 +11,8 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % focussites: vector of PSMSL IDs of sites of interest
 %             (specify 0 if you want GSL results returned in same format)
 % storefile: path of file with GSL samples and other output from
-%            Kopp et al. 2014
+%            Kopp et al. 2014, or else structure with field assignments
+%            from such file
 % selectscens: indices of desired scens (1 = RCP 8.5, 2 = 6.0, 3 = 4.5, 4=2.6)
 %              default = [1 2 3 4]
 % substitutep: structure with alternative values to substitute
