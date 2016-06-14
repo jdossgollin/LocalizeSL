@@ -1,6 +1,7 @@
-function [RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears)
+function [RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap,targyears]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears)
 
-% [RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears)
+% [RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap,targyears]=
+%         DecontoPollardEnsembleImport(DecontoPollardpath,[targyears])
 %
 % Imports Deconto and Pollard (2016) Antarctic ice sheet ensemble, to be passed to 
 % DecontoPollardEnsembleGSLCompose.
@@ -12,8 +13,9 @@ function [RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RD
 %
 % See help for DecontoPollardEnsembleGSLCompose for example.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Mar 30 17:57:23 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Jun 14 18:44:41 EDT 2016
 
+defval('targyears',[]);
 datMembers=importdata(fullfile(DecontoPollardpath,'EnsembleDefinition.csv'));
 ensembleids=datMembers.data(:,1);
 ensembleset=logical(datMembers.data(:,2:end));
@@ -41,8 +43,14 @@ for uuu=1:length(subsets)
         RDrefyr=find(RDt==2000);
         RDWAIS=bsxfun(@minus,RDWAIS,RDWAIS(RDrefyr,:));
         RDEAIS=bsxfun(@minus,RDEAIS,RDEAIS(RDrefyr,:));
-        RDWAIS2{uuu,rrr}=interp1(RDt,RDWAIS,targyears);
-        RDEAIS2{uuu,rrr}=interp1(RDt,RDEAIS,targyears);
+        if length(targyears)>0
+            RDWAIS2{uuu,rrr}=interp1(RDt,RDWAIS,targyears);
+            RDEAIS2{uuu,rrr}=interp1(RDt,RDEAIS,targyears);
+        else
+             RDWAIS2{uuu,rrr}=RDWAIS;
+             RDEAIS2{uuu,rrr}=RDEAIS;
+             targyears=RDt;
+        end
     end
 end
 
