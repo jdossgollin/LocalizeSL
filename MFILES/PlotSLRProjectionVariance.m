@@ -1,4 +1,4 @@
-function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls,colrs)
+function [hp,vars,fvars]=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls,colrs)
 
 % PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel],[dopooledscens],[subcomp],[labls],[colrs])
 %
@@ -9,7 +9,7 @@ function hp=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,s
 % sitesel is the row id of the site of interest in sampslocrise (default: 1)
 % scensel is the sequential id of scenario of interest (default: 1)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jan 28 09:48:58 EST 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sun Jul 24 10:59:07 EDT 2016
 
 % variance plots
 
@@ -53,6 +53,7 @@ for i=1:length(labls)
     vcur(vcur<(1e-9*max(vcur)))=0;
     hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
     vlast=vcur;
+    vars(i,:)=vcur;
 end
 
 if dopooledscens
@@ -67,6 +68,7 @@ if dopooledscens
     end
     vcur=[varu0A]/1e6;
     hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
+    vars(end+1,:)=vcur;
 end
 
 ylabel('m^2');
@@ -92,10 +94,13 @@ for i=1:length(labls)
     vcur(vcur<(1e-9*max(vcur)))=0;
     hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
     vlast=vcur;
+    fvars(i,:)=vcur;
 end
 if dopooledscens
     vcur=[varu0A./varu0A];
     hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
+    fvars(end+1,:)=vcur;
+
 end
 ylabel('Fraction of variance');
 ylim([0 1]);
