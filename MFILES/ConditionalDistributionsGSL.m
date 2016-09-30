@@ -1,4 +1,4 @@
-function [proj,condsubscen,projhi,projlo,projrate,projratehi,projratelo,projCONT,projCONThi,projCONTlo,colsCONT,colsCONTlab]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep)
+function [proj,condsubscen,projhi,projlo,targyearrates,projrate,projratehi,projratelo,projCONT,projCONThi,projCONTlo,colsCONT,colsCONTlab]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep)
 
 % [proj,condsubscen,projhi,projlo,projrate,projratehi,projratelo,projCONT,projCONThi,projCONTlo,colsCONT,colsCONTlab]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep)
 %
@@ -20,6 +20,7 @@ function [proj,condsubscen,projhi,projlo,projrate,projratehi,projratelo,projCONT
 % condsubscen: cell array of sets of sample indices for each scenario
 % projhi: high GSL projection for each scenario
 % projlo: low GSL projection for each scenario
+% targyearrates: years for rates
 % projrate: median rate projections for each scenario
 % projratehi: high rate projections for each scenario
 % projratelo: low rate projections for each scenario
@@ -30,7 +31,7 @@ function [proj,condsubscen,projhi,projlo,projrate,projratehi,projratelo,projCONT
 % colsCONTlab: labels for contribution breakdown
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 08:27:24 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:10:19 EDT 2016
 
 defval('condtargyrs',[2100 2050 2030]);
 defval('condtargs',[30 50 100 150 200 250 ;

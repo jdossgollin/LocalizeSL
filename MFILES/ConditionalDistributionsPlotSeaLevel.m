@@ -1,4 +1,4 @@
-function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix)
+function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,targyearrates,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix)
 
 % ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix)
 %
@@ -14,6 +14,7 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % projLOC: median LSL projection for each scenario
 % projLOChi: high LSL projection for each scenario
 % projLOClo: low LSL projection for each scenario
+% targyearrates: years for rates
 % projrate: median GSL rate projections for each scenario
 % projratehi: high GSL rate projections for each scenario
 % projratelo: low GSL rate projections for each scenario
@@ -22,11 +23,12 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % projLOCratelo: low LSL rate projections for each scenario
 % filesuffix: suffix to append to output files
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 08:28:58 EDT 2016
-%%
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:10:41 EDT 2016
+%
 
 defval('filesuffix','');
 
+disp('Local Scenarios table');
 fid=fopen(['LocalScenarios' filesuffix '.tsv'],'w');
 
 fprintf(fid,'Local scenarios (cm)\n');
@@ -104,6 +106,7 @@ fclose(fid);
 doyear=2100;
 dot=find(p.targyears==doyear);
 for qqq=1:size(projLOC,1)
+    disp(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
     clf;
     worldmap('North America');
     setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
@@ -135,7 +138,7 @@ for qqq=1:size(projLOC,1)
     pos0=get(gca,'position');
     hcb=colorbar('SouthOutside');
 
-    ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
+    ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f (Low)',[condtargs(1,qqq)/10 doyear]));
     colormap('parula');
     setm(gca,'mlinevisible','off','grid','off')
     caxis(crange);
@@ -153,7 +156,7 @@ for qqq=1:size(projLOC,1)
     pos0=get(gca,'position');
     hcb=colorbar('SouthOutside');
 
-    ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
+    ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f (High)',[condtargs(1,qqq)/10 doyear]));
     colormap('parula');
     setm(gca,'mlinevisible','off','grid','off')
     caxis(crange);
@@ -164,6 +167,7 @@ end
 
 %%%
 
+disp('Rate table');
 
 fid=fopen(['LocalScenariosRates' filesuffix '.tsv'],'w');    
 
