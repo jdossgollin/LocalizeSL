@@ -23,7 +23,7 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % projLOCratelo: low LSL rate projections for each scenario
 % filesuffix: suffix to append to output files
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:10:41 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:14:45 EDT 2016
 %
 
 defval('filesuffix','');
@@ -113,7 +113,11 @@ for qqq=1:size(projLOC,1)
     ax=gca;
     stateColor=[.8 .8 .8];
     geoshow('landareas.shp','facecolor',stateColor);
+    
     u=(squeeze(projLOC(qqq,dot,:))-condtargs(1,qqq))/10;
+    ulo=(squeeze(projLOClo(qqq,dot,:))-condtargs(1,qqq))/10;
+    uhi=(squeeze(projLOChi(qqq,dot,:))-condtargs(1,qqq))/10;
+
     scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,u,'s','filled');
 
     pos0=get(gca,'position');
@@ -122,7 +126,7 @@ for qqq=1:size(projLOC,1)
     ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
     colormap('parula');
     setm(gca,'mlinevisible','off','grid','off')
-    crange=quantile(u,[.01 .99]);
+    crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
     caxis(crange);
     pdfwrite(['LocalScenarioAdder' num2str(qqq) filesuffix]);    
     
@@ -133,7 +137,7 @@ for qqq=1:size(projLOC,1)
     stateColor=[.8 .8 .8];
     geoshow('landareas.shp','facecolor',stateColor);
     u=(squeeze(projLOClo(qqq,dot,:))-condtargs(1,qqq))/10;
-    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,u,'s','filled');
+    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,ulo,'s','filled');
 
     pos0=get(gca,'position');
     hcb=colorbar('SouthOutside');
@@ -150,8 +154,7 @@ for qqq=1:size(projLOC,1)
     ax=gca;
     stateColor=[.8 .8 .8];
     geoshow('landareas.shp','facecolor',stateColor);
-    u=(squeeze(projLOChi(qqq,dot,:))-condtargs(1,qqq))/10;
-    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,u,'s','filled');
+    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,uhi,'s','filled');
 
     pos0=get(gca,'position');
     hcb=colorbar('SouthOutside');
