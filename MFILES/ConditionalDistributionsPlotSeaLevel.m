@@ -136,7 +136,6 @@ for qqq=1:size(projLOC,1)
     ax=gca;
     stateColor=[.8 .8 .8];
     geoshow('landareas.shp','facecolor',stateColor);
-    u=(squeeze(projLOClo(qqq,dot,:))-condtargs(1,qqq))/10;
     scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,ulo,'s','filled');
 
     pos0=get(gca,'position');

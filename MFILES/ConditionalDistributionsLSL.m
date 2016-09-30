@@ -24,7 +24,6 @@ function [projLOC,projLOChi,projLOClo,projLOCrate,projLOCratehi,projLOCratelo]=C
 defval('difftimestep',20);
 defval('Nslice',20);
 
-Nslice=20;
 fullindex=1:length(p.targregions);
 cnt=1;
 slicesub{1}=1:min(Nslice,length(fullindex));
