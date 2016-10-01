@@ -34,7 +34,7 @@ end
 targyears=p.targyears;
 targregions=p.targregions;
 
-colsCOMP={p.colGIC,p.colTE,p.colGIS,p.colAIS,p.colTE}; colsCOMPlab={'GIC','TE','GIS','AIS','Oc'};
+colsCOMP={p.colGIC,p.colGIS,p.colAIS,p.colTE}; colsCOMPlab={'GIC','GIS','AIS','Oc'};
 
 
 for sss=1:length(slicesub)
