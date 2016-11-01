@@ -18,7 +18,7 @@ function ConditionalDistributionsPlotGSLComponents(p,condtargs,proj,projhi,projl
 % colsCONT: columns of core files used for contribution breakdown
 % colsCONTlab: labels for contribution breakdown
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Oct 01 01:07:49 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Oct 01 10:05:17 EDT 2016
 %
 
 defval('filesuffix','');
@@ -98,3 +98,18 @@ for qqq=1:size(projCONT,1)
 
 end
 fclose(fid);
+
+for qqq=1:size(projCONT,1)
+for ttt=1:length(colsCONT)
+    clf;
+    subplot(2,1,1);
+    dat.x =    p.targyears';
+    dat.y = projCONT(qqq,:,ttt)'/10;
+    dat.dy = [projCONT(qqq,:,ttt)'-projCONTlo(qqq,:,ttt)' -projCONT(qqq,:,ttt)'+projCONThi(qqq,:,ttt)']/10;
+    [hl,hk]=PlotWithShadedErrors(dat,[0 0 0]);
+    xlabel('Year (CE)');
+    ylabel('GSL contribution (cm)');
+    title([sprintf('%0.0f cm scenario - ',condtargs(1,qqq)/10) colsCONTlab{ttt}]);
+    pdfwrite(['GSLcont-' colsCONTlab{ttt} '-' num2str(qqq)]);
+end
+end

@@ -171,3 +171,36 @@ for qqq=1:size(projLOC,1)
     
 end
 end
+
+%%%%%
+
+% background rate
+
+
+clf;
+worldmap('North America');
+setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
+ax=gca;
+stateColor=[.8 .8 .8];
+geoshow('landareas.shp','facecolor',stateColor);
+scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,p.rateprojs,'s','filled');
+pos0=get(gca,'position');
+hcb=colorbar('SouthOutside');
+ht=title('Background rate (mm/yr)');
+colormap('parula');
+setm(gca,'mlinevisible','off','grid','off')
+pdfwrite(['LocalScenarioComponent-Bkgd' filesuffix]);    
+
+clf;
+worldmap('North America');
+setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
+ax=gca;
+stateColor=[.8 .8 .8];
+geoshow('landareas.shp','facecolor',stateColor);
+scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,p.rateprojssd,'s','filled');
+pos0=get(gca,'position');
+hcb=colorbar('SouthOutside');
+ht=title('Background rate - standard deviation (mm/yr)');
+colormap('parula');
+setm(gca,'mlinevisible','off','grid','off')
+pdfwrite(['LocalScenarioComponent-Bkgd-Std' filesuffix]);    

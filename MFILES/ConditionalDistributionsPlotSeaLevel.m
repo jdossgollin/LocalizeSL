@@ -1,6 +1,6 @@
-function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,targyearrates,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix)
+function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,targyearrates,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix,crange0)
 
-% ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix)
+% ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix,crange)
 %
 % Generate output plots and tables for conditional scenarios.
 %
@@ -22,11 +22,13 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % projLOCratehi: high LSL rate projections for each scenario
 % projLOCratelo: low LSL rate projections for each scenario
 % filesuffix: suffix to append to output files
+% crange: override color range for adders
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:14:45 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Oct 01 11:25:34 EDT 2016
 %
 
 defval('filesuffix','');
+defval('crange0',[]);
 
 disp('Local Scenarios table');
 fid=fopen(['LocalScenarios' filesuffix '.tsv'],'w');
@@ -127,6 +129,9 @@ for qqq=1:size(projLOC,1)
     colormap('parula');
     setm(gca,'mlinevisible','off','grid','off')
     crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
+    if length(crange0)>0 
+        crange=crange0;
+    end
     caxis(crange);
     pdfwrite(['LocalScenarioAdder' num2str(qqq) filesuffix]);    
     

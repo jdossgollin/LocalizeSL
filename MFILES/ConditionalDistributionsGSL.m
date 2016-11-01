@@ -1,6 +1,6 @@
-function [proj,condsubscen,projhi,projlo,targyearrates,projrate,projratehi,projratelo,projCONT,projCONThi,projCONTlo,colsCONT,colsCONTlab]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep)
+function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep)
 
-% [proj,condsubscen,projhi,projlo,projrate,projratehi,projratelo,projCONT,projCONThi,projCONTlo,colsCONT,colsCONTlab]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep)
+% [projections,condsubscen]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep)
 %
 % Generate global sea-level scenarios by conditionalizing probabilistic projections.
 %
@@ -16,8 +16,12 @@ function [proj,condsubscen,projhi,projlo,targyearrates,projrate,projratehi,projr
 %
 % OUTPUT
 % ------
-% proj: median GSL projection for each scenario
+% projections: structure with projection output
 % condsubscen: cell array of sets of sample indices for each scenario
+%
+% Fields of projections structure
+% -------------------------------
+% proj: median GSL projection for each scenario
 % projhi: high GSL projection for each scenario
 % projlo: low GSL projection for each scenario
 % targyearrates: years for rates
@@ -31,7 +35,7 @@ function [proj,condsubscen,projhi,projlo,targyearrates,projrate,projratehi,projr
 % colsCONTlab: labels for contribution breakdown
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 11:10:19 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:24:14 EDT 2016
 
 defval('condtargyrs',[2100 2050 2030]);
 defval('condtargs',[30 50 100 150 200 250 ;
@@ -60,9 +64,8 @@ pooledGSLrate=[sampsdGSLrise{1} ; sampsdGSLrise{2} ;sampsdGSLrise{3}];
 
 %%%%%
 
-clear proj projhi projlo projrate projCONT projCONThi projCONTlo  projratehi projratelo;
-colsCONT={colsGSL.colGIC,colsGSL.colTE,colsGSL.colGIS,colsGSL.colAIS,[1:23]}; colsCONTlab={'GIC','TE','GIS','AIS','all'};
-
+colsCONT={colsGSL.colGIC,colsGSL.colTE,colsGSL.colGIS,colsGSL.colAIS,colsGSL.colLS}; colsCONTlab={'GIC','TE','GIS','AIS','LS'};
+projections.colsCONT=colsCONT; projections.colsCONTlab=colsCONTlab;
 
 clear condsubscen;
 for qqq=1:size(condtargs,2)
@@ -75,17 +78,20 @@ for qqq=1:size(condtargs,2)
     
  
     condsubscen{qqq}=sub;
-     proj(qqq,:)=quantile(pooledGSL(sub,:),.5);
-     projhi(qqq,:)=quantile(pooledGSL(sub,:),.833);
-     projlo(qqq,:)=quantile(pooledGSL(sub,:),.167);
-     projrate(qqq,:)=quantile(pooledGSLrate(sub,:),.5);
-     projratehi(qqq,:)=quantile(pooledGSLrate(sub,:),.833);
-     projratelo(qqq,:)=quantile(pooledGSLrate(sub,:),.167);
+     projections.proj(qqq,:)=quantile(pooledGSL(sub,:),.5);
+     projections.projhi(qqq,:)=quantile(pooledGSL(sub,:),.833);
+     projections.projlo(qqq,:)=quantile(pooledGSL(sub,:),.167);
+     projections.projrate(qqq,:)=quantile(pooledGSLrate(sub,:),.5);
+     projections.projratehi(qqq,:)=quantile(pooledGSLrate(sub,:),.833);
+     projections.projratelo(qqq,:)=quantile(pooledGSLrate(sub,:),.167);
      for www=1:length(colsCONT)
          clear w; w{1}=squeeze(sum(pooledGSLcont(sub,colsCONT{www},:),2));
          [sampsdCONT]=SampleSLRates(w,targyearsGSL,difftimestep);
-         projCONT(qqq,:,www)=quantile(w{1},.5);
-         projCONThi(qqq,:,www)=quantile(w{1},.833);
-         projCONTlo(qqq,:,www)=quantile(w{1},.167);
+         projections.projCONT(qqq,:,www)=quantile(w{1},.5);
+         projections.projCONThi(qqq,:,www)=quantile(w{1},.833);
+         projections.projCONTlo(qqq,:,www)=quantile(w{1},.167);
      end     
 end
+
+projections.targyears=targyears;
+projections.targyearrates=targyearrates';
