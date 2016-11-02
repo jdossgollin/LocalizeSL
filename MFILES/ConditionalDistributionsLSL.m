@@ -1,6 +1,6 @@
-function projections=ConditionalDistributionsLSL2(p,condsubscen,substitutep)
+function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 
-% [projLOC,projLOChi,projLOClo,projLOCrate,projLOCratehi,projLOCratelo]=ConditionalDistributionsLSL(p,condsubscen,substitutep)
+% [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 %
 % Generate local sea-level scenarios by conditionalizing probabilistic projections.
 %
@@ -12,14 +12,29 @@ function projections=ConditionalDistributionsLSL2(p,condsubscen,substitutep)
 %
 % OUTPUT
 % ------
+% projections: projection structure
+%
+% Fields of projection structure
+% ------------------------------
 % projLOC: median LSL projection for each scenario
 % projLOChi: high LSL projection for each scenario
 % projLOClo: low LSL projection for each scenario
 % projLOCrate: median rate projections for each scenario
 % projLOCratehi: high rate projections for each scenario
 % projLOCratelo: low rate projections for each scenario
+% projLOC0: median LSL projection for each scenario, excluding background
+% projLOC0hi: high LSL projection for each scenario, excluding background
+% projLOC0lo: low LSL projection for each scenario, excluding background
+% projLOC0rate: median rate projections for each scenario, excluding background
+% projLOC0ratehi: high rate projections for each scenario, excluding background
+% projLOC0ratelo: low rate projections for each scenario, excluding background
+% projLOCcomp: median LSL component projection for each scenario
+% projLOCcomphi: high LSL component projection for each scenario
+% projLOCcomplo: low LSL component projection for each scenario
+% colsCOMP: component columns
+% colsCOMPlab: component labels
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 18:54:38 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:59:10 EDT 2016
 
 defval('difftimestep',20);
 defval('Nslice',20);
