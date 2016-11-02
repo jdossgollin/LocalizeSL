@@ -1,4 +1,4 @@
-function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,targyearrates,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix,crange0)
+function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,targyearrates,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix,crange0,cmap)
 
 % ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,projLOC,projLOChi,projLOClo,projrate,projratehi,projratelo,projLOCrate,projLOCratehi,projLOCratelo,filesuffix,crange)
 %
@@ -24,11 +24,12 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % filesuffix: suffix to append to output files
 % crange: override color range for adders
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Oct 01 11:25:34 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 02 19:44:29 EDT 2016
 %
 
 defval('filesuffix','');
 defval('crange0',[]);
+defval('cmap','parula');
 
 disp('Local Scenarios table');
 fid=fopen(['LocalScenarios' filesuffix '.tsv'],'w');
@@ -110,11 +111,15 @@ dot=find(p.targyears==doyear);
 for qqq=1:size(projLOC,1)
     disp(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
     clf;
-    worldmap('North America');
+    %worldmap('North America');
+    worldmap([-20 73],[120 -25]);
+
     setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
     ax=gca;
     stateColor=[.8 .8 .8];
     geoshow('landareas.shp','facecolor',stateColor);
+    states=shaperead('usastatehi', 'UseGeoCoords', true);
+    geoshow(states,'FaceColor','none');
     
     u=(squeeze(projLOC(qqq,dot,:))-condtargs(1,qqq))/10;
     ulo=(squeeze(projLOClo(qqq,dot,:))-condtargs(1,qqq))/10;
@@ -126,7 +131,7 @@ for qqq=1:size(projLOC,1)
     hcb=colorbar('SouthOutside');
 
     ht=title(sprintf('Adder for %0.0f cm Scenario - %0.0f',[condtargs(1,qqq)/10 doyear]));
-    colormap('parula');
+    colormap(cmap);
     setm(gca,'mlinevisible','off','grid','off')
     crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
     if length(crange0)>0 
