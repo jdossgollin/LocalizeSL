@@ -34,7 +34,7 @@ function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 % colsCOMP: component columns
 % colsCOMPlab: component labels
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:59:10 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 02 00:19:24 EDT 2016
 
 defval('difftimestep',20);
 defval('Nslice',20);
@@ -69,6 +69,9 @@ substitutep.rateprojssd=p.rateprojssd*0;
 for sss=1:length(slicesub)
     slicedp=slicep(p,slicesub{sss});
     clear wwprojLOC wwprojLOChi wwprojLOClo wwprojLOCrate wwprojLOCratehi wwprojLOCratelo;
+    clear wwprojLOC0 wwprojLOC0hi wwprojLOC0lo wwprojLOC0rate wwprojLOC0ratehi wwprojLOC0ratelo;
+    clear wwprojLOCc wwprojLOCchi wwprojLOCclo;
+    
     dtstep=difftimestep;
     parfor www=1:length(slicedp.targregions)
         selectedSite=targregions(slicesub{sss}(www));
@@ -164,7 +167,7 @@ for sss=1:length(slicesub)
 
 
     end
-    
+
     projections.projLOC0(:,:,slicesub{sss})=wwprojLOC0;
     projections.projLOC0hi(:,:,slicesub{sss})=wwprojLOC0hi;
     projections.projLOC0lo(:,:,slicesub{sss})=wwprojLOC0lo;
