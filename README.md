@@ -1,6 +1,6 @@
 # LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sun Feb 14 17:40:51 EST 2016
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 30 22:32:51 EST 2016
 
 ## Citation
 
@@ -25,7 +25,7 @@ This MATLAB code is intended to help end-users who wish to work with the sea-lev
 
 These routines do not provide the extreme flood level analysis in Kopp et al. (2014), but the Monte Carlo time series samples they produce can be combined with other analyses to look at probabilistic changes in flood frequency over time.
 
-The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, which stores 10,000 Monte Carlo samples for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that the github source archive does not include the MAT file; it is included both in the archive of v1.0 of the code, available from Zenodo at doi:10.5281/zenodo.15507, and the binary releases downloadable from github at https://github.com/bobkopp/LocalizeSL/releases.)
+The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, which stores 10,000 Monte Carlo samples for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that this files is stored in the Github archive using Git Large File Storage; if you do not have git-lfs set up, cloning the archive will only get you a pointer to this file, which you can download using the Github web interface.)
 
 Functions are stored in the MFILES directory.
 
