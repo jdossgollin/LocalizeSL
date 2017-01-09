@@ -1,4 +1,4 @@
-function ConditionalDistributionsPlotSeaLevelComponents(p,condtargs,projLOC,projLOChi,projLOClo,projLOCcomp,projLOCcomphi,projLOCcomplo,colsCOMP,colsCOMPlab,filesuffix)
+function ConditionalDistributionsPlotSeaLevelComponents(p,condtargs,projLOC,projLOChi,projLOClo,projLOCcomp,projLOCcomphi,projLOCcomplo,colsCOMP,colsCOMPlab,filesuffix,cmap)
 
 % ConditionalDistributionsPlotSeaLevelComponents(p,condtargs,projLOC,projLOChi,projLOClo,projLOCcomp,projLOCcomphi,projLOCcomplo,colsCOMP,colsCOMPlab,filesuffix)
 %
@@ -17,10 +17,11 @@ function ConditionalDistributionsPlotSeaLevelComponents(p,condtargs,projLOC,proj
 % colsCOMP: columns of core files used for compribution breakdown
 % colsCOMPlab: labels for compribution breakdown
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Sep 30 17:56:06 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Jan 09 13:46:51 EST 2017
 %
 
 defval('filesuffix','');
+defval('cmap','parula');
 
 disp('Local Scenarios component table');
 fid=fopen(['LocalScenariosComponents' filesuffix '.tsv'],'w');
@@ -129,7 +130,7 @@ for qqq=1:size(projLOC,1)
     hcb=colorbar('SouthOutside');
 
     ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f'],[condtargs(1,qqq)/10 doyear]));
-    colormap('parula');
+    colormap(cmap);
     setm(gca,'mlinevisible','off','grid','off')
     crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
     caxis(crange);
@@ -147,7 +148,7 @@ for qqq=1:size(projLOC,1)
     hcb=colorbar('SouthOutside');
 
     ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (Low)'],[condtargs(1,qqq)/10 doyear]));
-    colormap('parula');
+    colormap(cmap);
     setm(gca,'mlinevisible','off','grid','off')
     caxis(crange);
     pdfwrite(['LocalScenarioComponent-' curlab '-Low' num2str(qqq) filesuffix]);    
@@ -164,7 +165,7 @@ for qqq=1:size(projLOC,1)
     hcb=colorbar('SouthOutside');
 
     ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (High)'],[condtargs(1,qqq)/10 doyear]));
-    colormap('parula');
+    colormap(cmap);
     setm(gca,'mlinevisible','off','grid','off')
     caxis(crange);
     pdfwrite(['LocalScenarioComponent-' curlab '-Hi' num2str(qqq) filesuffix]);    
@@ -187,7 +188,7 @@ scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,p.rateprojs,'s','filled'
 pos0=get(gca,'position');
 hcb=colorbar('SouthOutside');
 ht=title('Background rate (mm/yr)');
-colormap('parula');
+colormap(cmap);
 setm(gca,'mlinevisible','off','grid','off')
 pdfwrite(['LocalScenarioComponent-Bkgd' filesuffix]);    
 
@@ -201,6 +202,6 @@ scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,p.rateprojssd,'s','fille
 pos0=get(gca,'position');
 hcb=colorbar('SouthOutside');
 ht=title('Background rate - standard deviation (mm/yr)');
-colormap('parula');
+colormap(cmap);
 setm(gca,'mlinevisible','off','grid','off')
 pdfwrite(['LocalScenarioComponent-Bkgd-Std' filesuffix]);    
