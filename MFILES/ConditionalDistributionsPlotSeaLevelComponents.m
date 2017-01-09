@@ -57,7 +57,7 @@ for www=1:length(p.targregions)
             fprintf(fid,'\t%0.1f',projLOCcomp(qqq,:,ttt,www)/10);
             fprintf(fid,'\n');
         end
-    
+        
         fprintf(fid,p.targregionnames{www});
         fprintf(fid,'\t%0.0f',p.targregions(www));
         fprintf(fid,'\t%0.2f',p.targsitecoords(www,:));
@@ -77,7 +77,7 @@ for www=1:length(p.targregions)
             fprintf(fid,'\t%0.1f',projLOCcomplo(qqq,:,ttt,www)/10);
             fprintf(fid,'\n');
         end
-                
+        
         fprintf(fid,p.targregionnames{www});
         fprintf(fid,'\t%0.0f',p.targregions(www));
         fprintf(fid,'\t%0.2f',p.targsitecoords(www,:));
@@ -98,7 +98,7 @@ for www=1:length(p.targregions)
             fprintf(fid,'\n');
         end
 
-    
+        
 
     end
     
@@ -111,66 +111,69 @@ doyear=2100;
 dot=find(p.targyears==doyear);
 for ttt=1:length(colsCOMP)
     curlab=colsCOMPlab{ttt};
-for qqq=1:size(projLOC,1)
-    disp(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f'],[condtargs(1,qqq)/10 doyear]));
-    clf;
-    worldmap('North America');
-    setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
-    ax=gca;
-    stateColor=[.8 .8 .8];
-    geoshow('landareas.shp','facecolor',stateColor);
-    
-    u=(squeeze(projLOCcomp(qqq,dot,ttt,:)))/10;
-    ulo=(squeeze(projLOCcomplo(qqq,dot,ttt,:)))/10;
-    uhi=(squeeze(projLOCcomphi(qqq,dot,ttt,:)))/10;
+    for qqq=1:size(projLOC,1)
+        disp(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f'],[condtargs(1,qqq)/10 doyear]));
+        clf;
+        %worldmap('North America');
+        worldmap([-20 73],[120 -25]);
+        setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
+        ax=gca;
+        stateColor=[.8 .8 .8];
+        geoshow('landareas.shp','facecolor',stateColor);
+        
+        u=(squeeze(projLOCcomp(qqq,dot,ttt,:)))/10;
+        ulo=(squeeze(projLOCcomplo(qqq,dot,ttt,:)))/10;
+        uhi=(squeeze(projLOCcomphi(qqq,dot,ttt,:)))/10;
 
-    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,u,'s','filled');
+        scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,u,'s','filled');
 
-    pos0=get(gca,'position');
-    hcb=colorbar('SouthOutside');
+        pos0=get(gca,'position');
+        hcb=colorbar('SouthOutside');
 
-    ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f'],[condtargs(1,qqq)/10 doyear]));
-    colormap(cmap);
-    setm(gca,'mlinevisible','off','grid','off')
-    crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
-    caxis(crange);
-    pdfwrite(['LocalScenarioComponent-' curlab num2str(qqq) filesuffix]);    
-    
-    clf;
-    worldmap('North America');
-    setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
-    ax=gca;
-    stateColor=[.8 .8 .8];
-    geoshow('landareas.shp','facecolor',stateColor);
-    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,ulo,'s','filled');
+        ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f'],[condtargs(1,qqq)/10 doyear]));
+        colormap(cmap);
+        setm(gca,'mlinevisible','off','grid','off')
+        crange=quantile([u(:)' ulo(:)' uhi(:)'],[.01 .99]);
+        caxis(crange);
+        pdfwrite(['LocalScenarioComponent-' curlab num2str(qqq) filesuffix]);    
+        
+        clf;
+        %worldmap('North America');
+        worldmap([-20 73],[120 -25]);
+        setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
+        ax=gca;
+        stateColor=[.8 .8 .8];
+        geoshow('landareas.shp','facecolor',stateColor);
+        scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,ulo,'s','filled');
 
-    pos0=get(gca,'position');
-    hcb=colorbar('SouthOutside');
+        pos0=get(gca,'position');
+        hcb=colorbar('SouthOutside');
 
-    ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (Low)'],[condtargs(1,qqq)/10 doyear]));
-    colormap(cmap);
-    setm(gca,'mlinevisible','off','grid','off')
-    caxis(crange);
-    pdfwrite(['LocalScenarioComponent-' curlab '-Low' num2str(qqq) filesuffix]);    
-    
-    clf;
-    worldmap('North America');
-    setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
-    ax=gca;
-    stateColor=[.8 .8 .8];
-    geoshow('landareas.shp','facecolor',stateColor);
-    scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,uhi,'s','filled');
+        ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (Low)'],[condtargs(1,qqq)/10 doyear]));
+        colormap(cmap);
+        setm(gca,'mlinevisible','off','grid','off')
+        caxis(crange);
+        pdfwrite(['LocalScenarioComponent-' curlab '-Low' num2str(qqq) filesuffix]);    
+        
+        clf;
+        %worldmap('North America');
+        worldmap([-20 73],[120 -25]);
+        setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
+        ax=gca;
+        stateColor=[.8 .8 .8];
+        geoshow('landareas.shp','facecolor',stateColor);
+        scatterm(p.targsitecoords(:,1),p.targsitecoords(:,2),10,uhi,'s','filled');
 
-    pos0=get(gca,'position');
-    hcb=colorbar('SouthOutside');
+        pos0=get(gca,'position');
+        hcb=colorbar('SouthOutside');
 
-    ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (High)'],[condtargs(1,qqq)/10 doyear]));
-    colormap(cmap);
-    setm(gca,'mlinevisible','off','grid','off')
-    caxis(crange);
-    pdfwrite(['LocalScenarioComponent-' curlab '-Hi' num2str(qqq) filesuffix]);    
-    
-end
+        ht=title(sprintf([curlab ' Component for %0.0f cm Scenario - %0.0f (High)'],[condtargs(1,qqq)/10 doyear]));
+        colormap(cmap);
+        setm(gca,'mlinevisible','off','grid','off')
+        caxis(crange);
+        pdfwrite(['LocalScenarioComponent-' curlab '-Hi' num2str(qqq) filesuffix]);    
+        
+    end
 end
 
 %%%%%
@@ -179,7 +182,8 @@ end
 
 
 clf;
-worldmap('North America');
+%worldmap('North America');
+worldmap([-20 73],[120 -25]);
 setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
 ax=gca;
 stateColor=[.8 .8 .8];
@@ -193,7 +197,8 @@ setm(gca,'mlinevisible','off','grid','off')
 pdfwrite(['LocalScenarioComponent-Bkgd' filesuffix]);    
 
 clf;
-worldmap('North America');
+%worldmap('North America');
+worldmap([-20 73],[120 -25]);
 setm(gca,'parallellabel','off','meridianlabel','off','flinewidth',1);
 ax=gca;
 stateColor=[.8 .8 .8];
