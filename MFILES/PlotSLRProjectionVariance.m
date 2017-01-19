@@ -1,4 +1,4 @@
-function [hp,vars,fvars]=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls,colrs,dopanels)
+function [hp,vars,fvars,hlg]=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,limyrs,sitesel,scensel,dopooledscens,subcomp,labls,colrs,dopanels)
 
 % PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[limyrs],[sitesel],[scensel],[dopooledscens],[subcomp],[labls],[colrs],[dopanels])
 %
@@ -47,6 +47,19 @@ if isfield(cols,'colvar')
 end
 
 
+if dopooledscens
+    u0A = [];
+    for scensel2=1:size(sampsloccomponents,2)
+        u0A=[u0A ; squeeze(sum(sampsloccomponents{sitesel,scensel2}(:,subcomp{end},subyears),2))];
+    end
+
+    for jj=1:size(u0A,2)
+        sub=find(~isnan(u0A(:,jj)));
+        varu0A(jj)=var(u0A(sub,jj));
+    end
+end
+
+
 clear hl hp;
 if ismember(1,dopanels)
     if length(dopanels)>1
@@ -68,15 +81,6 @@ if ismember(1,dopanels)
     end
 
     if dopooledscens
-        u0A = [];
-        for scensel2=1:size(sampsloccomponents,2)
-            u0A=[u0A ; squeeze(sum(sampsloccomponents{sitesel,scensel2}(:,subcomp{end},subyears),2))];
-        end
-
-        for jj=1:size(u0A,2)
-            sub=find(~isnan(u0A(:,jj)));
-            varu0A(jj)=var(u0A(sub,jj));
-        end
         vcur=[varu0A]/1e6;
         hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
         vars(end+1,:)=vcur;
@@ -84,9 +88,9 @@ if ismember(1,dopanels)
 
     ylabel('m^2');
     if dopooledscens
-        legend(hl(end:-1:1),'Scen',labls{end:-1:1},'Location','Northwest');
+        hlg=legend(hl(end:-1:1),'Scen',labls{end:-1:1},'Location','Northwest');
     else
-        legend(hl(end:-1:1),labls{end:-1:1},'Location','Northwest');
+        hlg=legend(hl(end:-1:1),labls{end:-1:1},'Location','Northwest');
     end
     longticks(gca);
 end
@@ -123,9 +127,9 @@ if ismember(2,dopanels)
     ylim([0 1]);
     if length(dopanels)==1
         if dopooledscens
-            legend(hl(end:-1:1),'Scen',labls{end:-1:1},'Location','Northwest');
+            hlg=legend(hl(end:-1:1),'Scen',labls{end:-1:1},'Location','Northwest');
         else
-            legend(hl(end:-1:1),labls{end:-1:1},'Location','Northwest');
+            hlg=legend(hl(end:-1:1),labls{end:-1:1},'Location','Northwest');
         end
     end
     longticks(gca);
