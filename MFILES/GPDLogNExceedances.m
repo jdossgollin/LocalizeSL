@@ -18,6 +18,8 @@ function y = GPDLogNExceedances(z,lambda,shape,scale,MHHW)
 % the value of exceedances at z = MHHW(1); otherwise, will default
 % to 365.25.
 %
+% Developed for Buchanan et al. (2016).
+%
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 01 08:37:37 EST 2016
 
 defval('MHHW',[]);

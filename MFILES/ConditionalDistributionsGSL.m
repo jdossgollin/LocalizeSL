@@ -34,7 +34,7 @@ function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,con
 % colsCONT: columns of core files used for contribution breakdown
 % colsCONTlab: labels for contribution breakdown
 %
-%
+% Developed for Sweet et al. (2017).
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:24:14 EDT 2016
 
 defval('condtargyrs',[2100 2050 2030]);

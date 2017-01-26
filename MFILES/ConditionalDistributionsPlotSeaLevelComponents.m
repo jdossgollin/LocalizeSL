@@ -17,6 +17,7 @@ function ConditionalDistributionsPlotSeaLevelComponents(p,condtargs,projLOC,proj
 % colsCOMP: columns of core files used for compribution breakdown
 % colsCOMPlab: labels for compribution breakdown
 %
+% Developed for Sweet et al. (2017).
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Jan 09 13:46:51 EST 2017
 %
 
