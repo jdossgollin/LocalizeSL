@@ -24,6 +24,7 @@ function ConditionalDistributionsPlotSeaLevel(p,condtargs,proj,projhi,projlo,pro
 % filesuffix: suffix to append to output files
 % crange: override color range for adders
 %
+% Developed for Sweet et al. (2017).
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 02 19:44:29 EDT 2016
 %
 

@@ -1,6 +1,15 @@
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Mon Jan 09 12:25:45 EST 2017
 
-% this one does the uncorrelated low only
+% This script is identical to runSeaLevelConditionalDistributions, except that it
+% turns off the correlation between thermal expansion and ocean dynamics.
+% It's used in Sweet et al. 2017 for the Low scenario.
+
+addpath(pwd)
+workdir='workdir-170109-Low';
+if ~exist(workdir,'dir')
+    mkdir(workdir)
+end
+cd(workdir);
 
 rootdir='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));

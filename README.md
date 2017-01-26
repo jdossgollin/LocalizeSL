@@ -1,17 +1,32 @@
 # LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 30 22:32:51 EST 2016
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jan 26 16:45:51 EST 2016
 
 ## Citation
 
-This code is intended to accompany the results of
+This code was originally developed to accompany the results of
 
 	R. E. Kopp, R. M. Horton, C. M. Little, J. X. Mitrovica, M. Oppenheimer,
 	D. J. Rasmussen, B. H. Strauss, and C. Tebaldi (2014). Probabilistic 21st
 	and 22nd century sea-level projections at a global network of tide	gauge
 	sites. Earth's Future 2: 287–306, doi:10.1002/2014EF000239. 
 
-Please cite that paper when using any results generated with this code.
+Please cite that paper when using any sea-level rise projections generated with this code.
+
+Additional features have subsequently been added to this  paper. Features related to sea-level rise allowances were developed for 
+
+	M. K. Buchanan, R. E. Kopp, M. Oppenheimer, and C. Tebaldi (2016).
+	Allowances for evolving coastal flood risk under uncertain local sea-level
+	rise. Climatic Change 137, 347-362. doi:10.1007/s10584-016-1664-7.
+
+Features related to developing discrete sea-level rise scenarios conditional on ranges of global mean sea level were developed for
+
+	W.V. Sweet, R. E. Kopp, C. P. Weaver, J. Obeysekera, R. Horton, E. R. Thieler,
+	and C. Zervas (2017). Global and Regional Sea Level Rise Scenarios for the
+	United States. Technical Report NOS CO-OPS 083. National Oceanic and
+	Atmospheric Administration.
+	
+Please cite the appropriate papers if making use of these features.
 
 ## Overview
 
@@ -23,11 +38,9 @@ This MATLAB code is intended to help end-users who wish to work with the sea-lev
 2. Localized Monte Carlo samples, disaggregatable by contributory process
 3. Localized variance decomposition plots 
 
-These routines do not provide the extreme flood level analysis in Kopp et al. (2014), but the Monte Carlo time series samples they produce can be combined with other analyses to look at probabilistic changes in flood frequency over time.
-
 The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, which stores 10,000 Monte Carlo samples for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that this files is stored in the Github archive using Git Large File Storage; if you do not have git-lfs set up, cloning the archive will only get you a pointer to this file, which you can download using the Github web interface.)
 
-Functions are stored in the MFILES directory.
+Functions are stored in the MFILES directory. Example scripts are stored in subdirectories of MFILES, labeled scripts*.
 
 The most important function is **LocalizeStoredProjections**:
 
@@ -75,62 +88,12 @@ Several other provided functions produce output, with detailed parameter specifi
 **WriteTableMC** outputs Monte Carlo samples.
 **WriteTableSLRProjection** outputs desired quantiles of the projections.
 
-## Example usage
+An example script that produces localized sea-level rise projections for New York City is provided in **scripts_Kopp2014/runLocalizeSL.m**.
 
-	selectedSite = 12; % use PSMSL ID here to select site
-
-	% set up path
-	
-	rootdir='~/Dropbox/Code/LocalizeSL';
-	corefile=fullfile(rootdir,'IFILES/SLRProjections140523core.mat');
-	addpath(fullfile(rootdir,'MFILES'));
-	
-	% generate local samples
-	
-	[sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(selectedSite,corefile);
-	
-	% plot curves
-	
-	figure;
-	hp1=PlotSLRProjection(sampslocrise,targyears,[],scens);
-	xlim([2000 2100]); ylim([0 200]);
-	title(sitenames{1});
-	
-	% plot variance decomposition
-	
-	figure;
-	hp2=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[],1);
-	subplot(2,2,1); title([ sitenames{1} ' - RCP 8.5']);
-	
-	figure;
-	hp3=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[],1,4);
-	subplot(2,2,1); title([sitenames{1} ' - RCP 2.6']);
-	
-	% output quantiles of projections
-	
-	quantlevs=[.01 .05 .167 .5 .833 .95 .99 .995 .999];
-	WriteTableSLRProjection(sampslocrise,quantlevs,siteids,sitenames,targyears,scens);
-	
-	% output Monte Carlo samples
-	WriteTableMC(sampslocrise,[],siteids,sitenames,targyears,scens);
-	
-	% output Monte Carlo samples without background trend,
-	% to allow incorporation of alternative estimates of background trend
-	
-	WriteTableMC(sampsloccomponents,1:23,siteids,sitenames,targyears,scens,'LSLProj_nobkgd_');
-	
-	% output decomposition
-	WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
-
-	% pull GSL samples
-	[sampsGSLrise,sampsGSLcomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(0,corefile);
-	WriteTableDecomposition(sampsGSLcomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
-
-	
 
 ----
 
-    Copyright (C) 2015 by Robert E. Kopp
+    Copyright (C) 2017 by Robert E. Kopp
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -20,6 +20,8 @@ function y = GPDELogNExceedances(z,lambda,shape,scale,MHHW,maxinterpN)
 % the value of exceedances at z = MHHW(1); otherwise, will default
 % to 365.25.
 %
+% Developed for Buchanan et al. (2016).
+%
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Mar 01 15:47:11 EST 2016
 
 defval('MHHW',[]);

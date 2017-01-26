@@ -18,6 +18,7 @@ function ConditionalDistributionsPlotGSLComponents(p,condtargs,proj,projhi,projl
 % colsCONT: columns of core files used for contribution breakdown
 % colsCONTlab: labels for contribution breakdown
 %
+% Developed for Sweet et al. (2017).
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Oct 01 10:05:17 EDT 2016
 %
 

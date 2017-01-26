@@ -1,5 +1,12 @@
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:05:24 EDT 2016
 
+addpath(pwd)
+workdir='workdir-161101';
+if ~exist(workdir,'dir')
+    mkdir(workdir)
+end
+cd(workdir);
+
 rootdir='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));
 

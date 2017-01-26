@@ -34,6 +34,7 @@ function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 % colsCOMP: component columns
 % colsCOMPlab: component labels
 %
+% Developed for Sweet et al. (2017).
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 02 00:19:24 EDT 2016
 
 defval('difftimestep',20);
