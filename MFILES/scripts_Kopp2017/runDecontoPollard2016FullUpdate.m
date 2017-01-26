@@ -3,7 +3,7 @@
 % Loop through all sites and output quantiles of projections
 % with Deconto & Pollard AIS components.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Jan 13 14:26:36 EST 2017
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jan 26 17:37:49 EST 2017
 
 workdir='workdir-170113griddedglobal';
 if ~exist(workdir,'dir')
@@ -15,7 +15,7 @@ cd(workdir);
 
 rootdir='~/Dropbox/Code/LocalizeSL';
 IFILES=fullfile(rootdir,'IFILES');
-corefile=load('~/tmp/SLRProjections170113GRIDDEDcore.mat');
+corefile=load(fullfile(IFILES,'SLRProjections170113GRIDDEDcore.mat'));
 DecontoPollardpath=fullfile(IFILES,'DecontoPollard-AIS-160411');
 addpath(fullfile(rootdir,'MFILES'));
 
@@ -49,9 +49,21 @@ end
 
 % now create Deconto-Pollard samples
 
-[RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears);
-sampsDP=DecontoPollardEnsembleGSLCompose(sampsGSLcomponents,colsGSL,RDWAIS2,RDEAIS2,ensembleLab,subsets,ensembleids,ensembleset,RDscens,RDscenmap);
-clear RDWAIS2 RDEAIS2;
+%[RDWAIS2,RDEAIS2,ensembleLab,bcsets,ensembleids,ensembleset,RDscens,RDscenmap,RDtargyears]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears);
+%save(DecontoPollardpath,'RDWAIS2','RDEAIS2','ensembleLab','bcsets','ensembleids','ensembleset','RDscens','RDscenmap','RDtargyears');
+
+RD=load(DecontoPollardpath);
+sub=find(ismember(RD.RDtargyears,targyears));
+for jjj=1:size(RD.RDWAIS2,1)
+    for kkk=1:size(RD.RDWAIS2,2)
+        RDWAIS2{jjj,kkk}=RD.RDWAIS2{jjj,kkk}(sub,:);
+        RDEAIS2{jjj,kkk}=RD.RDWAIS2{jjj,kkk}(sub,:);
+    end
+end
+ensembleLab=RD.ensembleLab; bcsets=RD.bcsets; ensembleids=RD.ensembleids; ensembleset=RD.ensembleset; RDscens=RD.RDscens; RDscenmap=RD.RDscenmap;
+clear RD;
+
+sampsDP=DecontoPollardEnsembleGSLCompose(sampsGSLcomponents,colsGSL,RDWAIS2,RDEAIS2,ensembleLab,bcsets,ensembleids,ensembleset,RDscens,RDscenmap);
 
 for jjj=1:size(sampsDP,1);
     for kkk=1:size(sampsDP,2)
@@ -61,13 +73,13 @@ for jjj=1:size(sampsDP,1);
 end
 
 for preferredEnsemble=1:length(ensembleLab)
-    for preferredSubset=1:length(subsets)
-        preferredEnsembleSetLabel=[ensembleLab{preferredEnsemble} subsets{preferredSubset}];
+    for preferredBC=1:length(bcsets)
+        preferredEnsembleSetLabel=[ensembleLab{preferredEnsemble} bcsets{preferredBC}];
 
         % output revised GSL
 
-        WriteTableDecomposition(sampsGSLcomponents2s{preferredSubset,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,colsGSL,scensGSL,['GSLproj_decomp_' preferredEnsembleSetLabel '_']);
-        WriteTableSLRProjection(sampsGSLrise2s{preferredSubset,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL,['GSLproj_' preferredEnsembleSetLabel '_']);
+        WriteTableDecomposition(sampsGSLcomponents2s{preferredBC,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,colsGSL,scensGSL,['GSLproj_decomp_' preferredEnsembleSetLabel '_']);
+        WriteTableSLRProjection(sampsGSLrise2s{preferredBC,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL,['GSLproj_' preferredEnsembleSetLabel '_']);
 
         %%% now generate local projections
 
@@ -76,14 +88,14 @@ for preferredEnsemble=1:length(ensembleLab)
             delete([fn '.tsv']);
         end
 
-        WriteTableSLRProjectionAppend(sampsGSLrise2s{preferredSubset,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL,fn);
+        WriteTableSLRProjectionAppend(sampsGSLrise2s{preferredBC,preferredEnsemble},quantlevs,siteidsGSL,sitenamesGSL,targyears,scensGSL,fn);
         
         for ppp=1:length(selectedSites)
 
             selectedSite=selectedSites(ppp);
             
             % generate local samples
-            substituteDP.samps = sampsDP{preferredSubset,preferredEnsemble};
+            substituteDP.samps = sampsDP{preferredBC,preferredEnsemble};
             [sampslocrise2,sampsloccomponents2,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(selectedSite,corefile,[],substituteDP);
 
             % output quantiles of projections
