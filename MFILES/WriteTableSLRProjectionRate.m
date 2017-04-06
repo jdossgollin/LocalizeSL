@@ -1,6 +1,6 @@
 function WriteTableSLRProjectionRate(sampslocrise,quantlevs,siteids,sitenames,targyears,scens,difftimestep,fileprefix,unitstr,fstr)
 
-% WriteTableSLRProjectionRate(sampslocrise,[quantlevs],siteids,sitenames,targyears,scens,[difftimestep],[fileprefix],[unitstr],[fstr])
+% WriteTableSLRProjectionRate(sampslocrise,[quantlevs],siteids,sitenames,targyears,scens,difftimestep,[fileprefix],[unitstr],[fstr])
 %
 % sampslocrise, siteids, sitenames, targyears, scens are outputted by LocalizeStoredProjections
 % difftimestep is the time step of the rate calculation
