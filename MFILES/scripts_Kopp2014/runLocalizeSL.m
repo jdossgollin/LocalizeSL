@@ -36,6 +36,9 @@ subplot(2,2,1); title([sitenames{1} ' - RCP 2.6']);
 quantlevs=[.01 .05 .167 .5 .833 .95 .99 .995 .999];
 WriteTableSLRProjection(sampslocrise,quantlevs,siteids,sitenames,targyears,scens);
 
+% output timing of height exceedances
+WriteTableSLRHeightExceedanceTiming(sampslocrise,[],siteids,sitenames,targyears,scens,1);
+
 % output Monte Carlo samples
 WriteTableMC(sampslocrise,[],siteids,sitenames,targyears,scens);
 
