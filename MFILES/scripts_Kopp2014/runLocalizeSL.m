@@ -1,13 +1,13 @@
 % Example script for use of LocalizeSL
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Fri Feb 27 22:26:39 EST 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-06-29 08:50:54 -0400
 
 selectedSite = 12; % use PSMSL ID here to select site
 
 % set up path
 
 rootdir='~/Dropbox/Code/LocalizeSL';
-corefile=fullfile(rootdir,'IFILES/SLRProjections140523core.mat');
+corefile=load(fullfile(rootdir,'IFILES/SLRProjections140523core.mat'));
 addpath(fullfile(rootdir,'MFILES'));
 
 % generate local samples
@@ -48,5 +48,5 @@ WriteTableMC(sampsloccomponents,1:23,siteids,sitenames,targyears,scens,'LSLProj_
 WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
 
 % pull GSL samples
-[sampsGSLrise,sampsGSLcomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(0,corefile);
-WriteTableDecomposition(sampsGSLcomponents,quantlevs,siteids,sitenames,targyears,cols,scens);
+[sampsGSLrise,sampsGSLcomponents,GSLsiteids,GSLsitenames,GSLtargyears,GSLscens,GSLcols] = LocalizeStoredProjections(0,corefile);
+WriteTableDecomposition(sampsGSLcomponents,quantlevs,GSLsiteids,GSLsitenames,GSLtargyears,GSLcols,GSLscens);
