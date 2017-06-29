@@ -7,14 +7,15 @@ function WriteTableSLRHeightExceedanceTiming(sampslocrise,heights,siteids,sitena
 %
 % sampslocrise, siteids, sitenames, targyears, scens are outputted by LocalizeStoredProjections.
 %
-% If oneway is set to 1, then any samples with sea-level falls
-% will be treated as though they stayed at their maximum value.
+% If oneway is set to 1 (default), then any samples with sea-level falls
+% will be treated as though they stayed at their maximum value. If it is
+% set to 0, then they will not be.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat Aug 29 19:05:03 EDT 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-06-29 08:54:03 -0400
 
 defval('fileprefix','LSLheights_');
 defval('heights',10:10:500);
-defval('oneway',0);
+defval('oneway',1);
 
 
 for jjj=1:length(siteids)
