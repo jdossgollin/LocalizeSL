@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue May 03 11:39:38 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-06 19:39:35 -0400
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -73,6 +73,7 @@ defval('showESLR',1);
 defval('showeffcurve',1);
 defval('show999',1);
 defval('showinteffcurve',1);
+defval('historicalcolor','y');
 
 if exist('params')
     parseFields(params)
@@ -132,7 +133,7 @@ if doplot
         ct=sum(bsxfun(@gt,historicaldata,testz))/(length(historicaldata)/365.25);
         subct=find(diff(ct)<0);
         subct=intersect(subct,find(testz>threshold));
-        plot(testz(subct),ct(subct),'ys');
+        plot(testz(subct),ct(subct),'s','Color',historicalcolor);
     end
     
     hl(iii)=plot(testz,histcurve,'k-');
