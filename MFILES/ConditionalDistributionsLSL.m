@@ -1,6 +1,6 @@
 function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 
-% [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep)
+% [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals)
 %
 % Generate local sea-level scenarios by conditionalizing probabilistic projections.
 %
@@ -35,22 +35,22 @@ function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 % colsCOMPlab: component labels
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Nov 02 00:19:24 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:15:33 -0400
 
 defval('difftimestep',20);
 defval('Nslice',20);
 defval('substitutep',[]);
+devals('qvals',[.5 .167 .833]);
 
 Nbkgdsamps=17;
 docomponents=1;
 
-if length(substitutep)==0
+if isempty(substitutep)
     clear substitutep; substitutep.filler=0;
 end
 
 
 fullindex=1:length(p.targregions);
-cnt=1;
 slicesub{1}=1:min(Nslice,length(fullindex));
 lastmax=max(slicesub{end});
 while lastmax<max(fullindex)
@@ -83,7 +83,7 @@ for sss=1:length(slicesub)
         end
         
         wlocalsamps=[wsamps{1}; wsamps{2} ; wsamps{3}];
-        [wsampsdrise,wtargyeardrates]=SampleSLRates(wsamps,targyears,dtstep);
+        [wsampsdrise]=SampleSLRates(wsamps,targyears,dtstep);
         wlocalsamprates=[wsampsdrise{1} ; wsampsdrise{2} ;wsampsdrise{3}];
         
         wprojLOC0 = zeros(length(condsubscen),length(targyears));
@@ -122,19 +122,19 @@ for sss=1:length(slicesub)
             wlsamprates = bsxfun(@plus,repmat(wlsamprates0,1,1,Nbkgdsamps),repmat(wbkgdratesamps,size(wlsamprates0,1),size(wlsamprates0,2)));
             wlsamprates=reshape(permute(wlsamprates,[3 1 2]),Nbkgdsamps*size(wlsamprates0,1),[]);
             
-            wprojLOC(qqq,:)=quantile(wlsamps,.5);
-            wprojLOChi(qqq,:)=quantile(wlsamps,.833);
-            wprojLOClo(qqq,:)=quantile(wlsamps,.167);
-            wprojLOCrate(qqq,:)=quantile(wlsamprates,.5);
-            wprojLOCratehi(qqq,:)=quantile(wlsamprates,.833);
-            wprojLOCratelo(qqq,:)=quantile(wlsamprates,.167);
+            wprojLOC(qqq,:)=quantile(wlsamps,qvals(1));
+            wprojLOChi(qqq,:)=quantile(wlsamps,qvals(3));
+            wprojLOClo(qqq,:)=quantile(wlsamps,qvals(2));
+            wprojLOCrate(qqq,:)=quantile(wlsamprates,qvals(1));
+            wprojLOCratehi(qqq,:)=quantile(wlsamprates,qvals(3));
+            wprojLOCratelo(qqq,:)=quantile(wlsamprates,qvals(2));
             
-            wprojLOC0(qqq,:)=quantile(wlsamps0,.5);
-            wprojLOC0hi(qqq,:)=quantile(wlsamps0,.833);
-            wprojLOC0lo(qqq,:)=quantile(wlsamps0,.167);
-            wprojLOC0rate(qqq,:)=quantile(wlsamprates0,.5);
-            wprojLOC0ratehi(qqq,:)=quantile(wlsamprates0,.833);
-            wprojLOC0ratelo(qqq,:)=quantile(wlsamprates0,.167);
+            wprojLOC0(qqq,:)=quantile(wlsamps0,qvals(1));
+            wprojLOC0hi(qqq,:)=quantile(wlsamps0,qvals(3));
+            wprojLOC0lo(qqq,:)=quantile(wlsamps0,qvals(2));
+            wprojLOC0rate(qqq,:)=quantile(wlsamprates0,qvals(1));
+            wprojLOC0ratehi(qqq,:)=quantile(wlsamprates0,qvals(3));
+            wprojLOC0ratelo(qqq,:)=quantile(wlsamprates0,qvals(2));
 
         end
         wwprojLOC(:,:,www)=wprojLOC;
@@ -155,9 +155,9 @@ for sss=1:length(slicesub)
             for ttt=1:length(colsCOMP)
                 wlocalsampsc=squeeze(sum(wlocalsampscomp(:,colsCOMP{ttt},:),2));
                 for qqq=1:length(condsubscen)
-                    wprojLOCc(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),.5);
-                    wprojLOCchi(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),.833);
-                    wprojLOCclo(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),.167);
+                    wprojLOCc(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),qvals(1));
+                    wprojLOCchi(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),qvals(3));
+                    wprojLOCclo(qqq,:,ttt)=quantile(wlocalsampsc(condsubscen{qqq},:),qvals(2));
                 end
             end      
 

@@ -1,6 +1,6 @@
-function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep)
+function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
 
-% [projections,condsubscen]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep)
+% [projections,condsubscen]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
 %
 % Generate global sea-level scenarios by conditionalizing probabilistic projections.
 %
@@ -35,7 +35,7 @@ function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,con
 % colsCONTlab: labels for contribution breakdown
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue Nov 01 19:24:14 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:11:50 -0400
 
 defval('condtargyrs',[2100 2050 2030]);
 defval('condtargs',[30 50 100 150 200 250 ;
@@ -49,6 +49,7 @@ defval('substitutep',[]);
 if length(substitutep)==0
     substitutep.filler=0;
 end
+defval('qvals',[.5 .167 .833])
 
 
 %%%%
@@ -78,18 +79,18 @@ for qqq=1:size(condtargs,2)
     
  
     condsubscen{qqq}=sub;
-     projections.proj(qqq,:)=quantile(pooledGSL(sub,:),.5);
-     projections.projhi(qqq,:)=quantile(pooledGSL(sub,:),.833);
-     projections.projlo(qqq,:)=quantile(pooledGSL(sub,:),.167);
-     projections.projrate(qqq,:)=quantile(pooledGSLrate(sub,:),.5);
-     projections.projratehi(qqq,:)=quantile(pooledGSLrate(sub,:),.833);
-     projections.projratelo(qqq,:)=quantile(pooledGSLrate(sub,:),.167);
+     projections.proj(qqq,:)=quantile(pooledGSL(sub,:),qvals(1));
+     projections.projhi(qqq,:)=quantile(pooledGSL(sub,:),qvals(3));
+     projections.projlo(qqq,:)=quantile(pooledGSL(sub,:),qvals(2));
+     projections.projrate(qqq,:)=quantile(pooledGSLrate(sub,:),qvals(1));
+     projections.projratehi(qqq,:)=quantile(pooledGSLrate(sub,:),qvals(3));
+     projections.projratelo(qqq,:)=quantile(pooledGSLrate(sub,:),qvals(2));
      for www=1:length(colsCONT)
          clear w; w{1}=squeeze(sum(pooledGSLcont(sub,colsCONT{www},:),2));
          [sampsdCONT]=SampleSLRates(w,targyearsGSL,difftimestep);
-         projections.projCONT(qqq,:,www)=quantile(w{1},.5);
-         projections.projCONThi(qqq,:,www)=quantile(w{1},.833);
-         projections.projCONTlo(qqq,:,www)=quantile(w{1},.167);
+         projections.projCONT(qqq,:,www)=quantile(w{1},qvals(1));
+         projections.projCONThi(qqq,:,www)=quantile(w{1},qvals(3));
+         projections.projCONTlo(qqq,:,www)=quantile(w{1},qvals(2));
      end     
 end
 
