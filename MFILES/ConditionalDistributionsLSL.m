@@ -1,6 +1,6 @@
-function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
+function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals,separatebkgd)
 
-% [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals)
+% [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep,[qvals],[separatebkgd])
 %
 % Generate local sea-level scenarios by conditionalizing probabilistic projections.
 %
@@ -35,18 +35,25 @@ function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep)
 % colsCOMPlab: component labels
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:15:33 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:33:15 -0400
 
 defval('difftimestep',20);
 defval('Nslice',20);
 defval('substitutep',[]);
-devals('qvals',[.5 .167 .833]);
+defval('qvals',[.5 .167 .833]);
+defval('separatebkgd',1);
 
 Nbkgdsamps=17;
 docomponents=1;
 
 if isempty(substitutep)
     clear substitutep; substitutep.filler=0;
+end
+
+if separatebkgd~=0
+    separatebkgd=1;
+else
+    separatebkgd=0;
 end
 
 
@@ -64,8 +71,10 @@ targregions=p.targregions;
 colsCOMP={p.colGIC,p.colGIS,p.colAIS,p.colTE}; colsCOMPlab={'GIC','GIS','AIS','Oc'};
 
 % turn off background rates
-substitutep.rateprojs=p.rateprojs*0;
-substitutep.rateprojssd=p.rateprojssd*0;
+if separatebkgd
+    substitutep.rateprojs=p.rateprojs*0;
+    substitutep.rateprojssd=p.rateprojssd*0;
+end
 
 for sss=1:length(slicesub)
     slicedp=slicep(p,slicesub{sss});
@@ -105,7 +114,10 @@ for sss=1:length(slicesub)
         u=norminv(linspace(0,1,Nbkgdsamps+2)); u=u(2:end-1);
         wbkgdratesamps=reshape(slicedp.rateprojs(www)+u*slicedp.rateprojssd(www),1,1,[]);
         wbkgdlevels=bsxfun(@times,slicedp.targyears-2000,wbkgdratesamps);
-        
+        if ~separatebkgd
+            wbkgdlevels=zeros(size(wbkgdlevels));
+        end
+
         if docomponents
             wlocalsampscomp=[wsampscomp{1}; wsampscomp{2} ; wsampscomp{3}];
             wprojLOCc = zeros(length(condsubscen),length(targyears),length(colsCOMP));
