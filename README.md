@@ -1,6 +1,6 @@
-# LocalizeSL: Offline sea-level localization code for Kopp et al. (2014)
+# LocalizeSL: Offline sea-level localization code
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Thu Jan 26 16:45:51 EST 2016
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Dec 13 2017
 
 ## Citation
 
@@ -25,6 +25,13 @@ Features related to developing discrete sea-level rise scenarios conditional on 
 	and C. Zervas (2017). Global and Regional Sea Level Rise Scenarios for the
 	United States. Technical Report NOS CO-OPS 083. National Oceanic and
 	Atmospheric Administration.
+	
+Features related to the substitution of output from a physical Antarctic ice-sheet model into the projections framework were developed for
+
+	R. E. Kopp, R. M. DeConto, D. A. Bader, R. M. Horton, C. C. Hay, S. Kulp,
+	M. Oppenheimer, D. Pollard, and B. H. Strauss (2017). Implications of
+	Antarctic ice-cliff collapse and ice-shelf hydrofracturing mechanisms for
+	sea-level projections. Earth’s Future. doi: 10.1002/2017EF000663. 
 	
 Please cite the appropriate papers if making use of these features.
 
