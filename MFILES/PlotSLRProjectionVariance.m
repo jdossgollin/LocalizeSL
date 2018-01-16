@@ -58,7 +58,7 @@ if dopooledscens
     for scensel2=1:size(sampsloccomponents,2)
         u0A=[u0A ; squeeze(sum(sampsloccomponents{sitesel,scensel2}(:,subcomp{end},subyears),2))];
     end
-
+    u0A = u0A(1:size(sampsloccomponents,2):end,:); % cut down so total samples is same
     for jj=1:size(u0A,2)
         sub=find(~isnan(u0A(:,jj)));
         varu0A(jj)=var(u0A(sub,jj));
@@ -71,6 +71,7 @@ if dopooledscens
                 u0B=[u0B ; squeeze(sum(sampsloccomponentset{PDFsel}{sitesel,scensel2}(:,subcomp{end},subyears),2))];
             end
        end
+       u0B = u0B(1:(size(sampsloccomponents,2)*size(sampsloccomponentset{PDFsel},2)):end,:); % cut down so total samples is same
 
         for jj=1:size(u0B,2)
             sub=find(~isnan(u0B(:,jj)));
@@ -151,7 +152,6 @@ if ismember(2,dopanels)
     else
         denom=var(squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{end},subyears),2)));
     end
-
 
     for i=1:length(labls)		
         u=squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{i},subyears),2));
