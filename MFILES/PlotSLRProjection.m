@@ -1,14 +1,15 @@
-function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,subscens)
+function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,subscens,endyears)
 
-% PlotSLRProjection(sampslocrise,targyears,[sitesel],[scens],[subscens])
+% PlotSLRProjection(sampslocrise,targyears,[sitesel],[scens],[subscens],[endyears])
 %
 % Plot sea-level rise projections.
 %
 % sampslocrise, targyears, and scens are outputted by LocalizeStoredProjections.
 % sitesel is the row id of the site of interest in sampslocrise (default: 1)
 % subscens can be used to select scenarios by sequential id (default: [1 3 4])
+% endyears is used to select the end years of the plots (default: [2100 2200])
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Feb 18 12:31:09 EST 2015
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-01-16 16:59:49 -0500
 
 
 defval('sitesel',1);
