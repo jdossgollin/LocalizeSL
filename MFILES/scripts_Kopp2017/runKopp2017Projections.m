@@ -55,7 +55,7 @@ sub=find(ismember(RD.RDtargyears,targyears));
 for jjj=1:size(RD.RDWAIS2,1)
     for kkk=1:size(RD.RDWAIS2,2)
         RDWAIS2{jjj,kkk}=RD.RDWAIS2{jjj,kkk}(sub,:);
-        RDEAIS2{jjj,kkk}=RD.RDWAIS2{jjj,kkk}(sub,:);
+        RDEAIS2{jjj,kkk}=RD.RDEAIS2{jjj,kkk}(sub,:);
     end
 end
 ensembleLab=RD.ensembleLab; bcsets=RD.bcsets; ensembleids=RD.ensembleids; ensembleset=RD.ensembleset; RDscens=RD.RDscens; RDscenmap=RD.RDscenmap;
