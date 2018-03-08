@@ -136,7 +136,7 @@ fclose(fid);
 % load data
 clear acov;
 fid=fopen('GPDfits_withunc.tsv','w');
-fprintf(fid,'Site\tSite (PSMSL Name)\tPSMSL ID\tNOAA Station ID\tlambda\tu\tshape\t5\t95\tscale\t5\t95\tAEP1.0\t5\t95\tAEP0.1\t5\t95\tAEP0.01\t5\t95\tAEP0.001\t5\t95\tAEP 1.0 expected\tAEP0.1 expected\tAEP0.01 expected\tAEP0.001 expected\tVshape\tVscale\tVscaleshape\n');
+fprintf(fid,'Site\tSite (PSMSL Name)\tPSMSL ID\tNOAA Station ID\tlambda\tu\tshape\t5\t95\tscale\t5\t95\tAEP1.0\t5\t95\tAEP0.1\t5\t95\tAEP0.01\t5\t95\tAEP0.002\t5\t95\tAEP 1.0 expected\tAEP0.1 expected\tAEP0.01 expected\tAEP0.002 expected\tVshape\tVscale\tVscaleshape\n');
 for qqq=1:length(tgids)
     subNOAA=find(NOAAids==tgids(qqq));
     if (~isnan(lambdas(qqq)))&&(length(subNOAA)==1)
@@ -182,11 +182,13 @@ for qqq=1:length(tgids)
         qlevel10 = quantile(sampz0(.1),quantlevs);
         qlevel100 = quantile(sampz0(.01),quantlevs);
         qlevel500 = quantile(sampz0(.002),quantlevs);
+        qlevel1000 = quantile(sampz0(.001),quantlevs);
         subd=find(diff(mean(exp(ysamps)))<0);
         expect1 = interp1(mean(exp(ysamps(:,subd))),testht(subd),1)+threshold;
         expect10 = interp1(mean(exp(ysamps(:,subd))),testht(subd),.1)+threshold;
         expect100 = interp1(mean(exp(ysamps(:,subd))),testht(subd),.01)+threshold;
         expect500 = interp1(mean(exp(ysamps(:,subd))),testht(subd),.002)+threshold;
+        expect1000 = interp1(mean(exp(ysamps(:,subd))),testht(subd),.001)+threshold;
         
         ymean=log(mean(exp(ysamps)));
         

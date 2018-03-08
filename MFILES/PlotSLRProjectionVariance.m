@@ -9,12 +9,15 @@ function [hp,vars,fvars,hlg]=PlotSLRProjectionVariance(sampsloccomponents,targye
 % sitesel is the row id of the site of interest in sampslocrise (default: 1)
 % scensel is the sequential id of scenario of interest (default: 1)
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-01-02 17:01:06 -0500
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-02-05 14:35:16 -0500
 
 % variance plots
 
-defval('colrs','rcbgmyrkcbgm');
+defval('colrs',['rcbgmyrkcbgm']');
 linew=[1 1 1 1 1 1 1];
+if ~isnumeric(colrs(1))
+    colrs=colrs(:);
+end
 
 defval('dopooledscens',0);
 defval('dopooledPDFs',0)
@@ -95,7 +98,7 @@ if ismember(1,dopanels)
         u=squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{i},subyears),2));
         vcur=[var(u)]/1e6;
         vcur(vcur<(1e-9*max(vcur)))=0;
-        hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
+        hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i,:)); hold on;
         vlast=vcur;
         vars(i,:)=vcur;
     end
@@ -105,16 +108,16 @@ if ismember(1,dopanels)
         if ((dopooledPDFs==0)||(dopooledPDFs==2))
             vlast=vcur;
             vcur=[varu0A]/1e6;
- %          hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
-            hl(i+1)=plot(yrs,vcur,colrs(i+1),'linewidth',2);
+ %          hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1,:)); hold on;
+            hl(i+1)=plot(yrs,vcur,'Color',colrs(i+1,:),'linewidth',2);
             vars(end+1,:)=vcur;
             vlast=vcur; i=i+1;
         end
         if dopooledPDFs>0
             vlast=vcur;
             vcur=[varu0B]/1e6;
-            %hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
-            hl(i+1)=plot(yrs,vcur,colrs(i+1),'linewidth',2);
+            %hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1,:)); hold on;
+            hl(i+1)=plot(yrs,vcur,'Color',colrs(i+1,:),'linewidth',2);
             vars(end+1,:)=vcur;            
         end
     end
@@ -157,7 +160,7 @@ if ismember(2,dopanels)
         u=squeeze(sum(sampsloccomponents{sitesel,scensel}(:,subcomp{i},subyears),2));
         vcur=[var(u)./denom];
         vcur(vcur<(1e-9*max(vcur)))=0;
-        hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i)); hold on;
+        hl(i)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i,:)); hold on;
         vlast=vcur;
         fvars(i,:)=vcur;
     end
@@ -166,16 +169,16 @@ if ismember(2,dopanels)
        if ((dopooledPDFs==0)||(dopooledPDFs==2))
             vlast=vcur;
             vcur=[varu0A./denom];
- %          hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
-            hl(i+1)=plot(yrs,vcur,colrs(i+1),'linewidth',2);
+ %          hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1,:)); hold on;
+            hl(i+1)=plot(yrs,vcur,'Color',colrs(i+1,:),'linewidth',2);
             fvars(end+1,:)=vcur;
             vlast=vcur; i=i+1;
         end
         if dopooledPDFs>0
             vlast=vcur;
             vcur=[varu0B./denom];
-            %hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1)); hold on;
-            hl(i+1)=plot(yrs,vcur,colrs(i+1),'linewidth',2);
+            %hl(i+1)=patch([yrs yrs(end:-1:1)],[vcur vlast(end:-1:1)],colrs(i+1,:)); hold on;
+            hl(i+1)=plot(yrs,vcur,'Color',colrs(i+1,:),'linewidth',2);
             fvars(end+1,:)=vcur;            
         end
 
