@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-06 19:39:35 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-03-08 09:02:53 -0500
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -67,6 +67,7 @@ defval('startyear',2020);
 defval('endyears',[2050 2100]);
 defval('doplot',1);
 defval('effcurve',[]);
+defval('histcurvesamps',[])
 defval('showuncertainty',0);
 defval('historicaldata',[]);
 defval('showESLR',1);
@@ -74,6 +75,10 @@ defval('showeffcurve',1);
 defval('show999',1);
 defval('showinteffcurve',1);
 defval('historicalcolor','y');
+defval('legendloc','Northeast');
+defval('xlims',[]);
+defval('ylims',[1e-4 10]);
+defval('xlabels','meters');
 
 if exist('params')
     parseFields(params)
@@ -99,13 +104,15 @@ for ttt=1:length(targyears)
     effcurve999(ttt,:)=exp(logN(testz-SLR999(ttt)));
 end
 
-if size(shape,1)>1
-    for iii=1:size(shape,1)
-        logNs = @(z) GPDLogNExceedances(z-threshold,lambda,shape(iii),scale(iii),-threshold);
-        histcurvesamps(iii,:) = real(exp(logNs(testz)));
+if length(histcurvesamps)==0
+    if size(shape,1)>1
+        for iii=1:size(shape,1)
+            logNs = @(z) GPDLogNExceedances(z-threshold,lambda,shape(iii),scale(iii),-threshold);
+            histcurvesamps(iii,:) = real(exp(logNs(testz)));
+        end
+    else
+        histcurvesamps = effcurve(1,:);
     end
-else
-    histcurvesamps = effcurve(1,:);
 end
 
 histcurve=exp(logN(testz));
@@ -173,14 +180,18 @@ if doplot
         
     end
 
-    hld=legend(hl,legstr,'Location','Northeast');
+    hld=legend(hl,legstr,'Location',legendloc);
     set(hld,'fontsize',7);
 
     set(gca,'ysc','log');
-    ylim([1e-4 10]);
+    ylim(ylims);
+
+    if length(xlims)>0
+        xlim(xlims);
+    end
 
     title(sitelab);
-    xlabel('meters'); ylabel('expected events/year');
+    xlabel(xlabels); ylabel('expected events/year');
 
 end
 
