@@ -26,7 +26,7 @@ function output=OutputPastAndProjectedSL(TGdata,samps,targyears,params)
 %    - tablefn: if non-empty, base filename to use for table output
 %    - tableqlevs: quantile levels to include in projections table (default: [.05 .17 .5 .83 .95 .99 .995 .999])
 %
-% Last updated by Bob Kopp, 2017-08-17 00:02:30 -0400
+% Last updated by Bob Kopp, 2018-03-27 18:15:35 -0400
 
 defval('params',[]);
 defval('smoothwin',[]);

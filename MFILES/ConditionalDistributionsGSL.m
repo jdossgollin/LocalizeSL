@@ -1,4 +1,4 @@
-function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
+function [projections,condsubscen,pooledGSL,pooledGSLcont,pooledGSLrate]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
 
 % [projections,condsubscen]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
 %
@@ -35,7 +35,7 @@ function [projections,condsubscen]=ConditionalDistributionsGSL(p,condtargyrs,con
 % colsCONTlab: labels for contribution breakdown
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:11:50 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-04-01 17:38:08 -0400
 
 defval('condtargyrs',[2100 2050 2030]);
 defval('condtargs',[30 50 100 150 200 250 ;
@@ -61,7 +61,6 @@ targyears=targyearsGSL; targyearrates=targyearGSLrates;
 pooledGSL=[sampsGSLrise{1} ; sampsGSLrise{2} ;sampsGSLrise{3}];
 pooledGSLcont=[sampsGSLcomponents{1} ; sampsGSLcomponents{2} ;sampsGSLcomponents{3}];
 pooledGSLrate=[sampsdGSLrise{1} ; sampsdGSLrise{2} ;sampsdGSLrise{3}];
-
 
 %%%%%
 
