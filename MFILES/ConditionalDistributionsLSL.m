@@ -1,4 +1,4 @@
-function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals,separatebkgd)
+function [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals,separatebkgd)
 
 % [projections]=ConditionalDistributionsLSL(p,condsubscen,substitutep,[qvals],[separatebkgd])
 %
@@ -35,13 +35,13 @@ function projections=ConditionalDistributionsLSL(p,condsubscen,substitutep,qvals
 % colsCOMPlab: component labels
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-07-29 12:33:15 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-04-02 15:41:10 -0400
 
 defval('difftimestep',20);
 defval('Nslice',20);
 defval('substitutep',[]);
 defval('qvals',[.5 .167 .833]);
-defval('separatebkgd',1);
+defval('separatebkgd',0);
 
 Nbkgdsamps=17;
 docomponents=1;
