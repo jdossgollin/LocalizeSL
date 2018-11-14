@@ -9,7 +9,7 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
 % subscens can be used to select scenarios by sequential id (default: [1 3 4])
 % endyears is used to select the end years of the plots (default: [2100 2200])
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-03-09 17:44:22 -0500
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-10-11 12:03:13 -0400
 
 
     defval('sitesel',1);
@@ -20,6 +20,7 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
     defval('startyear',[2000]);
     defval('unitfactor',1/1000);
     defval('unitlabel','m');
+    defval('minylim',0);
 
     if exist('params')
         parseFields(params)
@@ -37,7 +38,7 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
         end
         ylims(nn,:)=[floor(min(min(squeeze(qvals(:,1,nn))*2*unitfactor)))/2 ceil(max(max(squeeze(qvals(:,2,nn))*2*unitfactor)))/2];
     end
-    ylims(:,1)=min(0,ylims(:,1));
+    ylims(:,1)=min(minylim,ylims(:,1));
 
     clf;
 
@@ -54,6 +55,7 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
         end
 
         xlim([startyear endyears(xxx)]);
+
         if (xxx)==1
             legend(hp(end:-1:1),scenlab(end:-1:1),'Location','Northeast');
         end
@@ -91,6 +93,7 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
 
         axes(ha);
     end
+    disp(endyears)
 
 end
 
