@@ -1,11 +1,11 @@
 % Example script for use of LocalizeSL
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-01-16 17:03:19 -0500
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:11:24 -0400
 
 rootdir='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));
 
-selectedSites=[12 180];
+selectedSites=[180];
 
 %%%%
 
@@ -19,12 +19,26 @@ for ccc=1:2
         ccclab='DP16';
     end
 
+    [sampsGSLrise,sampsGSLcomponents,~,~,targyears,~,colsGSL] = LocalizeStoredProjections(0,corefile);
+
+    cols=colsGSL;
+    cols.colIS=[cols.colAIS cols.colGIS];
+    cols.colLI=[cols.colIS cols.colGIC];
+    
+
     for selectedSite=selectedSites(:)'
 
         % generate local samples
 
         [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] = LocalizeStoredProjections(selectedSite,corefile);
         nameshort=sitenames{1}(1:3);
+
+        % separate out thermal expansion and DSL
+        for nnn=1:length(sampsGSLcomponents)
+            sampsloccomponents{nnn}(:,end+1,:)=sampsloccomponents{nnn}(:,cols.colOD,:)-sampsGSLcomponents{nnn}(:,colsGSL.colTE,:);
+            sampsloccomponents{nnn}(:,cols.colTE,:)=sampsGSLcomponents{nnn}(:,colsGSL.colTE,:);
+        end
+        cols.colOD=size(sampsloccomponents{1},2);
 
         % plot curves
 
@@ -68,7 +82,14 @@ for ccc=1:2
         WriteTableMC(sampsloccomponents,setdiff(1:size(sampsloccomponents{1},2),cols.colGIA),siteids,sitenames,targyears,scens,['LSLproj_MC_nobkgd_' ccclab '_' nameshort '_']);
 
         % output decomposition
-        WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,['LSLproj_decomp_' ccclab '_' nameshort '_']);
+
+        subcomp={cols.colAIS,cols.colGIS,cols.colGIC, cols.colTE, ...
+        cols.colLS, cols.colOD, ...
+        cols.colGIA,1:size(sampsloccomponents{1},2) };
+
+        complabls={'AIS','GIS','GIC','TE','LWS','DSL','Geo','Total'};
+
+        WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,['LSLproj_decomp_' ccclab '_' nameshort '_'],subcomp,complabls);
 
 
     end
