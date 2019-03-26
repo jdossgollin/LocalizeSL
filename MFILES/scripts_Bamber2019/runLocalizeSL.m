@@ -3,7 +3,7 @@
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-01 10:58:34 -0500
 
-selectedSite = 12; % use PSMSL ID here to select site
+selectedSite = 0; % use PSMSL ID here to select site
 
 % set up path
 
