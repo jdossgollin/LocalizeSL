@@ -1,11 +1,11 @@
 % Example script for use of LocalizeSL
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:11:24 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:55:45 -0400
 
 rootdir='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));
 
-selectedSites=[180];
+selectedSites=[12 180];
 
 %%%%
 
@@ -91,6 +91,22 @@ for ccc=1:2
 
         WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,targyears,cols,scens,['LSLproj_decomp_' ccclab '_' nameshort '_'],subcomp,complabls);
 
+        clf;
+        subplot(3,1,1);
+        scensel=1; timesel=5;
+        PlotSLRDecomposition(sampsloccomponents,[],[],scensel,timesel,targyears,cols,subcomp,complabls);
+        title([sitenames{1} ' - ' scens{scensel} ' - ' num2str(targyears(timesel)) ' - ' ccclab]);
+        subplot(3,1,2);
+        scensel=1; timesel=10;
+        PlotSLRDecomposition(sampsloccomponents,[],[],scensel,timesel,targyears,cols,subcomp,complabls);
+        xl=get(gca,'xlim');
+        title([sitenames{1} ' - ' scens{scensel} ' - ' num2str(targyears(timesel)) ' - ' ccclab]);
+        subplot(3,1,3);
+        scensel=4; timesel=10;
+        PlotSLRDecomposition(sampsloccomponents,[],[],scensel,timesel,targyears,cols,subcomp,complabls);
+        set(gca,'xlim',xl);
+        title([sitenames{1} ' - ' scens{scensel} ' - ' num2str(targyears(timesel)) ' - ' ccclab]);
+        pdfwrite(['LSLproj_decomp_' ccclab '_' nameshort]);
 
     end
     % pull GSL samples
