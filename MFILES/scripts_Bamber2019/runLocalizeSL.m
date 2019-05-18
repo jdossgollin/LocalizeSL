@@ -1,4 +1,4 @@
-% Example script for use of LocalizeSL
+%% Example script for use of LocalizeSL
 % with Bamber et al. (2019) projections.
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-01 10:58:34 -0500
