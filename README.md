@@ -1,6 +1,6 @@
 # LocalizeSL: Offline sea-level localization code
 
-README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Wed Dec 13 2017
+README file last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Sat May 18 2019
 
 ## Citation
 
@@ -31,7 +31,15 @@ Features related to the substitution of output from a physical Antarctic ice-she
 	R. E. Kopp, R. M. DeConto, D. A. Bader, R. M. Horton, C. C. Hay, S. Kulp,
 	M. Oppenheimer, D. Pollard, and B. H. Strauss (2017). Implications of
 	Antarctic ice-cliff collapse and ice-shelf hydrofracturing mechanisms for
-	sea-level projections. Earth’s Future. doi: 10.1002/2017EF000663. 
+	sea-level projections. Earth’s Future 5, 1217-1233. doi: 10.1002/2017EF000663. 
+	
+Features related to the use of scenarios other than the RCPs (e.g., temperature-based scenarios) were developed for 
+
+	D. J. Rasmussen, K. Bittermann, M. K. Buchanan, S. Kulp, B. H. Strauss, R. E. Kopp, and M. Oppenheimer (2018). Extreme sea level implications of 1.5 °C, 2.0 °C, and 2.5 °C temperature stabilization targets in the 21st and 22nd centuries. Environmental Research Letters 13, 034040. doi: 10.1088/1748-9326/aaac87.
+	
+Additional projections using structured expert judgement-based estimates of ice-sheet contributions at narrowly defined time points were developed for 
+	
+	J. L. Bamber, M. Oppenheimer, R. E. Kopp, W. Aspinall and R. M. Cooke (2019). Ice sheet contributions to future sea level rise from structured expert judgement. Proceedings of the National Academy of Sciences. doi: 10.1073/pnas.1817205116.
 	
 Please cite the appropriate papers if making use of these features.
 
