@@ -62,7 +62,7 @@ This MATLAB code is intended to help end-users who wish to work with the sea-lev
 
 The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, which stores 10,000 Monte Carlo samples for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that this files is stored in the Github archive using Git Large File Storage; if you do not have git-lfs set up, cloning the archive will only get you a pointer to this file, which you can download using the Github web interface.)
 
-Functions are stored in the MFILES directory. Example scripts are stored in subdirectories of MFILES, labeled scripts*.
+Functions are stored in the MFILES directory. Example scripts are stored in the scripts directory.
 
 The most important function is **LocalizeStoredProjections**:
 
@@ -110,12 +110,12 @@ Several other provided functions produce output, with detailed parameter specifi
 **WriteTableMC** outputs Monte Carlo samples.
 **WriteTableSLRProjection** outputs desired quantiles of the projections.
 
-An example script that produces localized sea-level rise projections for New York City is provided in **scripts_Kopp2014/runLocalizeSL.m**.
+An example script that produces localized sea-level rise projections for New York City is provided in **scripts/Kopp2014/runLocalizeSL.m**.
 
 
 ----
 
-    Copyright (C) 2017 by Robert E. Kopp
+    Copyright (C) 2019 by Robert E. Kopp
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
