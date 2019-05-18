@@ -6,7 +6,7 @@ function PlotSLRDecomposition(sampsloccomponents,quantlevs,sitesel,scensel,times
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:39:47 -0400
 
-defval('quantlevs',[.16 .84 ; .05 .95]);
+defval('quantlevs',[.16 .84 ; .05 .95 ; .01 .99]);
 
 if cols.colOD==cols.colTE
     cols.colTE2=[];
