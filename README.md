@@ -35,11 +35,18 @@ Features related to the substitution of output from a physical Antarctic ice-she
 	
 Features related to the use of scenarios other than the RCPs (e.g., temperature-based scenarios) were developed for 
 
-	D. J. Rasmussen, K. Bittermann, M. K. Buchanan, S. Kulp, B. H. Strauss, R. E. Kopp, and M. Oppenheimer (2018). Extreme sea level implications of 1.5 °C, 2.0 °C, and 2.5 °C temperature stabilization targets in the 21st and 22nd centuries. Environmental Research Letters 13, 034040. doi: 10.1088/1748-9326/aaac87.
+	D. J. Rasmussen, K. Bittermann, M. K. Buchanan, S. Kulp, 
+	B. H. Strauss, R. E. Kopp, and M. Oppenheimer (2018). Extreme
+	 sea level implications of 1.5 °C, 2.0 °C, and 2.5 °C temperature
+	  stabilization targets in the 21st and 22nd centuries. 
+	  Environmental Research Letters 13, 034040. doi: 10.1088/1748-9326/aaac87.
 	
 Additional projections using structured expert judgement-based estimates of ice-sheet contributions at narrowly defined time points were developed for 
 	
-	J. L. Bamber, M. Oppenheimer, R. E. Kopp, W. Aspinall and R. M. Cooke (2019). Ice sheet contributions to future sea level rise from structured expert judgement. Proceedings of the National Academy of Sciences. doi: 10.1073/pnas.1817205116.
+	J. L. Bamber, M. Oppenheimer, R. E. Kopp, W. Aspinall and 
+	R. M. Cooke (2019). Ice sheet contributions to future sea level 
+	rise from structured expert judgement. Proceedings of the 
+	National Academy of Sciences. doi: 10.1073/pnas.1817205116.
 	
 Please cite the appropriate papers if making use of these features.
 
