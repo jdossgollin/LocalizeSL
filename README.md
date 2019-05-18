@@ -54,22 +54,21 @@ Please cite the appropriate papers if making use of these features.
 
 This code requires MATLAB with the Statistics Toolbox.
 
-This MATLAB code is intended to help end-users who wish to work with the sea-level rise projections of Kopp et al. (2014) in greater detail than provided by the supplementary tables accompanying that table but without re-running the full global analysis using the supplementary code accompanying the paper. Key functionality these routines provide include:
+This MATLAB code is intended to help end-users who wish to work with the sea-level rise projections of Kopp et al. (2014) in greater detail than provided by the supplementary tables accompanying that table but without re-running the full global analysis using the [supplementary code accompanying the paper](http://github.com/bobkopp/ProjectSL). Key functionality these routines provide include:
 
 1. Local sea-level rise projections at decadal time points and arbitrary quantiles
 2. Localized Monte Carlo samples, disaggregatable by contributory process
 3. Localized variance decomposition plots 
 
-The IFILES directory contains the ~200 MB file SLRProjections140523core.mat, which stores 10,000 Monte Carlo samples for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that this files is stored in the Github archive using Git Large File Storage; if you do not have git-lfs set up, cloning the archive will only get you a pointer to this file, which you can download using the Github web interface.)
+The IFILES directory contains the ~300 MB core files, which store 10,000+ Monte Carlo samples per emissions scenario for each of the processes contributing to global sea-level change, along with metadata. The code loads these samples without regenerating them and then localizes them. (Note that this files is stored in the Github archive using Git Large File Storage; if you do not have git-lfs set up, cloning the archive will only get you a pointer to this file, which you can download using the Github web interface.)
 
 Functions are stored in the MFILES directory. Example scripts are stored in the scripts directory.
 
 The most important function is **LocalizeStoredProjections**:
-
  	[sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols] =
 	LocalizeStoredProjections(focussites,storefile)
 
-LocalizeStoredProjections takes as input two parameters. STOREFILE is the path of the SLRProjections140523core.mat file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables to Kopp et al. (2014) to identify the IDs corresponding to your site of interest. Specify 0 if you want GSL samples returned in the same format.)
+LocalizeStoredProjections takes as input two parameters. STOREFILE is the path of the core file. FOCUSSITES is the PSMSL ID or IDs of the site(s) of interest. (Please see psmsl.org or the supplementary tables of Kopp et al. (2017) to identify the IDs corresponding to your site of interest. Specify 0 if you want GSL samples returned in the same format.)
 
 LocalizeStoredProjections outputs two M x N cell arrays of localized Monte Carlo samples, SAMPSLOCRISE and SAMPSLOCCOMPONENTS. In each cell array, the m rows correspond to the sites specified in FOCUSSITES and the N columns to different RCPs (specifically, RCP 8.5, RCP 6.0, RCP 4.5, and RCP 2.6). 
 
@@ -104,13 +103,12 @@ The other outputs of LocalizeStoredProjections are identifying information that 
 
 Several other provided functions produce output, with detailed parameter specification described in the headers.
 
-**PlotSLRProjection** generates a time series plot analogous to Figure 3 of Kopp et al. (2014).
-
-**PlotSLRProjectionVariance** generates a variance decomposition plot analogous to Figure 4 of Kopp et al. (2014).
+**PlotSLRProjection** generates a time series plot.
+**PlotSLRProjectionVariance** generates a variance decomposition plot.
 **WriteTableMC** outputs Monte Carlo samples.
 **WriteTableSLRProjection** outputs desired quantiles of the projections.
 
-An example script that produces localized sea-level rise projections for New York City is provided in **scripts/Kopp2014/runLocalizeSL.m**.
+An example script that produces localized sea-level rise projections for New York City is provided in **scripts/Kopp2014/runLocalizeSL.m**. Example scripts associated with other publications are also provided in the scripts directory.
 
 
 ----
