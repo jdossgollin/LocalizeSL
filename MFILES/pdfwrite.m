@@ -9,7 +9,7 @@ function pdfwrite(figh,fname)
 %	figh	figure handle
 %	fname	filename (no extension)
 %
-% Last updated by Bob Kopp rkopp-at-rutgers.edu, 18 May 2014
+% Last updated by Bob Kopp rkopp-at-rutgers.edu, 2019-05-06 18:00:03 -0400
 
 if nargin==1
         fname=figh;
@@ -17,6 +17,7 @@ if nargin==1
 end
 
 epsfname = [fname '.eps'];
-saveas(figh,epsfname,'epsc2');
+%saveas(figh,epsfname,'epsc2');
+print(epsfname,'-depsc','-painters');
 system(['unset LD_LIBRARY_PATH ; epstopdf ' epsfname]);
 delete(epsfname);
