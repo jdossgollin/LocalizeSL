@@ -22,13 +22,16 @@ function [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears,sitesel,scens,su
     defval('unitlabel','m');
     defval('minylim',0);
 
+    endyears = intersect(endyears,targyears);
+
     if exist('params')
         parseFields(params)
     end
 
     scenlab={};
     for kk=subscens
-        scenlab={scenlab{:},[upper(scens{kk}(1:3)) ' ' scens{kk}(4) '.' scens{kk}(5)]};
+        %scenlab={scenlab{:},[upper(scens{kk}(1:3)) ' ' scens{kk}(4) '.' scens{kk}(5)]};
+        scenlab={scenlab{:},upper(scens{kk}(1:end))};
     end
 
     for nn=1:length(endyears)

@@ -37,7 +37,7 @@ function [sampslocrise,sampsloccomponents,siteids,sitenames,targyears,scens,cols
 % cols: structure with column identifiers for contributing processes
 %
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, Tue May 31 16:55:12 EDT 2016
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-05-20 13:55:57 -0400
 
 defval('focussites',12);
 defval('storefile','SLRProjections140523core');
@@ -48,7 +48,7 @@ load(storefile,'scens','targregions','targregionnames','targyears','samps','seed
      'ThermExpStd','OceanDynTECorr','rateprojs','rateprojssd','mergeZOSZOSTOGA','fpsite','quantlevs','colGIC','colGIS','colAIS','colLS','colTE');
 end
 
-defval('selectscens',1:4);
+defval('selectscens',1:length(scens));
 
 if exist('substitutep')
     parseFields(substitutep);
