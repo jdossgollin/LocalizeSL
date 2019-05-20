@@ -108,8 +108,7 @@ Several other provided functions produce output, with detailed parameter specifi
 **WriteTableMC** outputs Monte Carlo samples.
 **WriteTableSLRProjection** outputs desired quantiles of the projections.
 
-An example script that produces localized sea-level rise projections for New York City is provided in **scripts/Kopp2014/runLocalizeSL.m**. Example scripts associated with other publications are also provided in the scripts directory.
-
+Example scripts that serve the most common uses of LocalizeSL are provided in **scripts/generic**.  Example scripts associated with various publications are also provided in the scripts directory.
 
 ----
 
