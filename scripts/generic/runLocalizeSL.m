@@ -1,7 +1,7 @@
 % Example script for use of LocalizeSL to generate common tables and plots
 % for RSL projections.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:55:45 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-06-11 09:32:53 -0400
 
 selectedSites=[12 180]; % specify the PSMSL or grid cell IDs of interest
 
@@ -36,8 +36,8 @@ for ccc=1:length(corefiles)
 
         % separate out thermal expansion and DSL
         for nnn=1:length(sampsGSLcomponents)
-            sampsloccomponents{nnn}(:,end+1,:)=sampsloccomponents{nnn}(:,cols.colOD,:)-sampsGSLcomponents{nnn}(:,colsGSL.colTE,:);
-            sampsloccomponents{nnn}(:,cols.colTE,:)=sampsGSLcomponents{nnn}(:,colsGSL.colTE,:);
+            sampsloccomponents{nnn}(:,end+1,:)=sampsloccomponents{nnn}(:,cols.colOD,:)-sampsGSLcomponents{nnn}(:,GSLcols.colTE,:);
+            sampsloccomponents{nnn}(:,cols.colTE,:)=sampsGSLcomponents{nnn}(:,GSLcols.colTE,:);
         end
         cols.colOD=size(sampsloccomponents{1},2);
 
