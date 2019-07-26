@@ -1,12 +1,12 @@
 % Example script for use of LocalizeSL to generate common tables and plots
 % for RSL projections.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-06-11 09:32:53 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-07-25 17:42:53 -0400
 
 selectedSites=[12 180]; % specify the PSMSL or grid cell IDs of interest
 
 rootdir='~/Dropbox/Code/LocalizeSL'; % change to directory containing LocalizeSL
-corefiles={'SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections180124GRIDDEDcore_Tscens.mat','SLRProjections190301core_SEJ.mat','SLRProjections190301core_SEJ.mat'}; % specify corefiles to use
+corefiles={'SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections180124GRIDDEDcore_Tscens.mat','SLRProjections190725core_SEJ_full.mat','SLRProjections190725core_SEJ_full.mat'}; % specify corefiles to use
 corefilelabs={'K14','DP16','R18','B19H','B19L'}; % specify corefile labels
 subcore={'','','','corefileH','corefileL'}; % specify if corefile file contains multiple cores
 quantlevs=[.01 .05 .167 .5 .833 .95 .99 .995 .999]; % quantiles to use

@@ -8,7 +8,7 @@ selectedSite = 0; % use PSMSL ID here to select site
 % set up path
 
 rootdir='~/Dropbox/Code/LocalizeSL';
-corefiles=load(fullfile(rootdir,'IFILES/SLRProjections190301core_SEJ.mat'));
+corefiles=load(fullfile(rootdir,'IFILES/SLRProjections190725core_SEJ_full.mat'));
 addpath(fullfile(rootdir,'MFILES'));
 
 % specify scenario labels and scenarios to use
@@ -34,12 +34,14 @@ for ccc=1:2
     figure;
     hp1=PlotSLRProjection(sampslocrise,targyears,[],scenlabs,selscens,2300);
     title(sitenames{1});
+    pdfwrite(['GSLproj_' scenlabs{1}])
 
     % plot variance decomposition
 
     figure;
     hp2=PlotSLRProjectionVariance(sampsloccomponents,targyears,cols,[2050 2300],1,1);
     subplot(2,2,1); title([ sitenames{1} ' - ' scenlabs{1}]);
+    pdfwrite(['GSLprojvar_' scenlabs{1}])
 
     % output quantiles of projections
 
