@@ -1,4 +1,4 @@
-% 2019-07-25 19:59:55 -0400
+% 2019-07-26 15:21:05 -0400
 
 rootdir='~/Dropbox/Code/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));
@@ -62,7 +62,7 @@ ISdp16=ISdp16(:,subt);
 CV2=corr(ISdp16);
 clear corefileA;
 
-samps=normcdf(mvnrnd([0 0 0 0],CV2,10000));
+samps=normcdf(lhsnorm([0 0 0 0],CV2,10000));
 sampsi=ceil(samps*size(data,1));
 
 clear dataH dataL dataBaseline;
@@ -317,7 +317,7 @@ corefile2.samps(:,cols.colGIS,:,1)=dataLex(subdat,:,3);
 corefileL=corefile2;
 clear corefile corefile2;
 
-save SLRProjections190725core_SEJ_full corefileH corefileL
+save SLRProjections190726core_SEJ_full corefileH corefileL
 
 %
 

@@ -8,7 +8,7 @@ selectedSite = 0; % use PSMSL ID here to select site
 % set up path
 
 rootdir='~/Dropbox/Code/LocalizeSL';
-corefiles=load(fullfile(rootdir,'IFILES/SLRProjections190725core_SEJ_full.mat'));
+corefiles=load(fullfile(rootdir,'IFILES/SLRProjections190726core_SEJ_full.mat'));
 addpath(fullfile(rootdir,'MFILES'));
 
 % specify scenario labels and scenarios to use
