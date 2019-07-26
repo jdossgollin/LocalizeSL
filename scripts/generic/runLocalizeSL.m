@@ -1,7 +1,7 @@
 % Example script for use of LocalizeSL to generate common tables and plots
 % for RSL projections.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-07-25 17:42:53 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-07-25 20:42:48 -0400
 
 selectedSites=[12 180]; % specify the PSMSL or grid cell IDs of interest
 
@@ -67,7 +67,7 @@ for ccc=1:length(corefiles)
 
         if ismember(2010,targyears)
             clf;
-            [hp,vars,fvars,hlg]=PlotSLRProjectionVariance(sampsloccomponents(:,subscens),targyears,cols,[2010 2100],1,2,1,subcomp,complabls,'rcbgmykrcbgm');
+            [hp,vars,fvars,hlg]=PlotSLRProjectionVariance(sampsloccomponents(:,subscens),targyears,cols,[2010 2100],1,min(2,length(subscens)),1,subcomp,complabls,'rcbgmykrcbgm');
             title(sitenames{1});
             pdfwrite(['LSLprojvar_' ccclab '_' nameshort '_' num2str(siteids(1))]);
         end
