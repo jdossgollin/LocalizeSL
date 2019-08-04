@@ -4,7 +4,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %    SLRFloodNexpVsLevelCurves(samps,targyears,threshold,scale,shape,lambda,
 %    [sitelab],[params])
 %
-% Output a figure plotting expected number of floods vs flood height for
+% Output a figure plotting expected number of extreme sea levels vs ESL height for
 % historic GPD, shifted GPDs, and AADLLs.
 %
 % INPUTS:
@@ -59,7 +59,7 @@ function [effcurve,testz,histcurve,histcurvesamps,effcurveESLR,effcurve999,integ
 %                                   scale,shape,lambda,sitelab);     
 %     pdfwrite([sitelab '_returncurves']);
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-03-08 09:02:53 -0500
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-08-03 21:44:02 -0400
 
 defval('sitelab',[]);
 defval('testz',0:.01:10);
@@ -72,6 +72,7 @@ defval('showuncertainty',0);
 defval('historicaldata',[]);
 defval('showESLR',1);
 defval('showeffcurve',1);
+defval('show50',1);
 defval('show999',1);
 defval('showinteffcurve',1);
 defval('historicalcolor','y');
@@ -85,6 +86,7 @@ if exist('params')
 end
 
 ESLR = mean(samps);
+SLR50=quantile(samps,.5);
 SLR999=quantile(samps,.999);
 
 if size(shape,1)>1
@@ -101,6 +103,7 @@ end
 
 for ttt=1:length(targyears)
     effcurveESLR(ttt,:)=exp(logN(testz-ESLR(ttt)));
+    effcurve50(ttt,:)=exp(logN(testz-SLR50(ttt)));
     effcurve999(ttt,:)=exp(logN(testz-SLR999(ttt)));
 end
 
@@ -162,7 +165,12 @@ if doplot
             hl(iii)=plot(testz,effcurve(t,:), [colrs1(qqq) '-']);
             legstr{iii} = ['N_e(' num2str(endyears(qqq)) ')'];  iii=iii+1;
         end
-        
+
+        if show50
+            hl(iii)=plot(testz,effcurve50(t,:),[colrs1(qqq) '-.'] );
+            legstr{iii}=['N+SL_{50}(' num2str(endyears(qqq)) ')']; iii=iii+1;
+        end
+
         if show999
             hl(iii)=plot(testz,effcurve999(t,:),[colrs1(qqq) ':'] );
             legstr{iii}=['N+SL_{99.9}(' num2str(endyears(qqq)) ')']; iii=iii+1;
