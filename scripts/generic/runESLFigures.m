@@ -1,8 +1,8 @@
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-05-20 21:23:55 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-08-03 21:50:32 -0400
 
 selectedSite = 12;
 
-corefiles = {'SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections190301core_SEJ.mat','SLRProjections190301core_SEJ.mat'}; % specify corefiles to use
+corefiles = {'SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections190726core_SEJ_full.mat','SLRProjections190726core_SEJ_full.mat'}; % specify corefiles to use
 corefilelabs = {'K14_8.5', 'K14_2.6','DP16_8.5','DP16_2.6','B19H','B19L'}; % specify corefile labels
 subcore = {'', '', '','','corefileH','corefileL'}; % specify if corefile file contains multiple cores
 selscens = [1 4 1 4 1 1];
