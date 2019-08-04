@@ -2,10 +2,10 @@
 
 selectedSite = 12;
 
-corefiles = {'SLRProjections170113GRIDDEDcore.mat', 'SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat', 'SLRProjections190301core_SEJ.mat'}; % specify corefiles to use
-corefilelabs = {'K14', 'DP16', 'B19H'}; % specify corefile labels
-subcore = {'', '', 'corefileH'}; % specify if corefile file contains multiple cores
-selscens = [1 1 1];
+corefiles = {'SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections170113GRIDDEDcore-DP16-Pl5_15-BC.mat','SLRProjections190301core_SEJ.mat','SLRProjections190301core_SEJ.mat'}; % specify corefiles to use
+corefilelabs = {'K14_8.5', 'K14_2.6','DP16_8.5','DP16_2.6','B19H','B19L'}; % specify corefile labels
+subcore = {'', '', '','','corefileH','corefileL'}; % specify if corefile file contains multiple cores
+selscens = [1 4 1 4 1 1];
 linespecs = {'-', '--', '-.', ':'};
 colorspecs = [217 95 2] / 255;
 truncatesamplesat = 3.0; % m at which to truncate samples
