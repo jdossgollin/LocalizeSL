@@ -6,7 +6,7 @@ function WriteTableDecomposition(sampsloccomponents,quantlevs,siteids,sitenames,
 %
 % sampsloccomponents, siteids, sitenames, targyears, scens, cols are outputted by LocalizeStoredProjections
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-05-20 13:36:13 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-09-12 18:52:17 -0400
 
 defval('fileprefix','LSLproj_decomp_');
 defval('quantlevs',[.01 .05 .167 .5 .833 .95 .99 .995 .999]);
@@ -34,7 +34,7 @@ for jjj=1:length(siteids)
                 if length(subcomp{sss})>0
                     u=squeeze(sum(sampsloccomponents{jjj,kkk}(:,subcomp{sss},ttt),2));
                     fprintf(fid,labls{sss});
-                    fprintf(fid,'\t%0.0f',quantile(u/10,quantlevs));
+                    fprintf(fid,'\t%0.1f',quantile(u/10,quantlevs));
                     fprintf(fid,'\n');
                 end               
             end

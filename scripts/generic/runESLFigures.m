@@ -101,9 +101,9 @@ plot(testz(subct), ct(subct), 's', 'Color', historicalcolor); hold on;
 hl(1) = plot(testz, histcurve, 'k');
 plot(testz, quantile(histcurvesamps, [.17 .83], 1), 'color', [.6 .6 .6]);
 hold on;
-set(gca, 'yscale', 'log'); ylim([.002 10]);
+set(gca, 'yscale', 'log'); ylim([.001 1]);
 
-for ccc = 1:length(corefiles)
+for ccc = 1:length(linespecs)
     subyr = find(targyears{ccc} == 2050);
     hl(end + 1) = plot(testz, effcurve{ccc}(subyr, :), 'linestyle', linespecs{ccc}, 'color', colorspecs(1, :)); hold on;
 end
@@ -117,6 +117,7 @@ hld = legend(hl, u, 'location', 'northeast')
 set(hld, 'fontsize', 7)
 xlim([0 4.75]);
 
+clear hl;
 subplot(2, 1, 2);
 ct = sum(bsxfun(@gt, historicaldata, testz)) / (length(historicaldata) / 365.25);
 subct = find(diff(ct) < 0);
@@ -127,7 +128,7 @@ plot(testz, quantile(histcurvesamps, [.17 .83], 1), 'color', [.6 .6 .6]);
 hold on;
 set(gca, 'yscale', 'log'); ylim([.002 10]);
 
-for ccc = 1:length(corefiles)
+for ccc = 1:length(linespecs)
     subyr = find(targyears{ccc} == 2100);
     hl(end + 1) = plot(testz, effcurve{ccc}(subyr, :), 'linestyle', linespecs{ccc}, 'color', colorspecs(1, :)); hold on;
 end
@@ -141,6 +142,7 @@ hld = legend(hl, u, 'location', 'northeast')
 set(hld, 'fontsize', 7)
 xlim([0 4.75]);
 pdfwrite([shortname '_ESL']);
+
 
 fid = fopen([shortname '_ESL.tsv'], 'w');
 fprintf(fid, '\t%0.3f', testz);
