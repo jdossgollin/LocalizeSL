@@ -1,4 +1,4 @@
-function [projections,condsubscen,pooledGSL,pooledGSLcont,pooledGSLrate]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
+function [projections,condsubscen,pooledGSL,pooledGSLcont,pooledGSLrate]=ConditionalDistributionsGSL(p,condtargyrs,condtargs,condtargwins,substitutep,qvals,doscens)
 
 % [projections,condsubscen]=GSLConditionalDistributions(p,condtargyrs,condtargs,condtargwins,substitutep,qvals)
 %
@@ -13,6 +13,7 @@ function [projections,condsubscen,pooledGSL,pooledGSLcont,pooledGSLrate]=Conditi
 % condtargwins: tolerance (in mm) for deviation from condtargs;
 %               same dimensions as condtargs
 % substitutep: subtitutions to make in p
+% doscens: scenarios to use in core structure (default: [1 3 4])
 %
 % OUTPUT
 % ------
@@ -35,7 +36,8 @@ function [projections,condsubscen,pooledGSL,pooledGSLcont,pooledGSLrate]=Conditi
 % colsCONTlab: labels for contribution breakdown
 %
 % Developed for Sweet et al. (2017).
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2018-04-01 17:38:08 -0400
+%
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2020-01-30 17:08:08 -0500
 
 defval('condtargyrs',[2100 2050 2030]);
 defval('condtargs',[30 50 100 150 200 250 ;
@@ -50,17 +52,25 @@ if length(substitutep)==0
     substitutep.filler=0;
 end
 defval('qvals',[.5 .167 .833])
+defval('doscens',[1 3 4])
 
 
 %%%%
 
-[sampsGSLrise,sampsGSLcomponents,siteidsGSL,sitenamesGSL,targyearsGSL,scensGSL,colsGSL] = LocalizeStoredProjections(0,p,[1 3 4],substitutep);
+[sampsGSLrise,sampsGSLcomponents,siteidsGSL,sitenamesGSL,targyearsGSL,scensGSL,colsGSL] = LocalizeStoredProjections(0,p,doscens,substitutep);
 [sampsdGSLrise,targyearGSLrates]=SampleSLRates(sampsGSLrise,targyearsGSL,difftimestep);
 
 targyears=targyearsGSL; targyearrates=targyearGSLrates;
-pooledGSL=[sampsGSLrise{1} ; sampsGSLrise{2} ;sampsGSLrise{3}];
-pooledGSLcont=[sampsGSLcomponents{1} ; sampsGSLcomponents{2} ;sampsGSLcomponents{3}];
-pooledGSLrate=[sampsdGSLrise{1} ; sampsdGSLrise{2} ;sampsdGSLrise{3}];
+
+pooledGSL=[sampsGSLrise{1}];
+pooledGSLcont=[sampsGSLcomponents{1}];
+pooledGSLrate=[sampsdGSLrise{1}];
+
+for ssss=2:length(sampsGSLrise)
+    pooledGSL=[pooledGSL; sampsGSLrise{ssss}];
+    pooledGSLcont=[pooledGSLcont ; sampsGSLcomponents{ssss}];
+    pooledGSLrate=[pooledGSLrate ; sampsdGSLrise{ssss}];
+end
 
 %%%%%
 
