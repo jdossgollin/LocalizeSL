@@ -29,6 +29,9 @@ for ccc=corefilestodo
     [sampsGSLrise,sampsGSLcomponents,GSLsiteids,GSLsitenames,targyears,GSLscens,GSLcols] = LocalizeStoredProjections(0,corefile);
     WriteTableDecomposition(sampsGSLcomponents,quantlevs,GSLsiteids,GSLsitenames,targyears,GSLcols,GSLscens,['GSLproj_decomp_' ccclab '_']);
 
+    % output table for site coordinates
+    WriteSiteInfoFromCorefile(corefile,['siteinfo_' ccclab '.tsv']);
+
     for selectedSite=selectedSites(:)'
 
         % generate local samples
