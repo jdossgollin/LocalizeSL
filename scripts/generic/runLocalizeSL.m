@@ -1,7 +1,7 @@
 % Example script for use of LocalizeSL to generate common tables and plots
 % for RSL projections.
 %
-% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-07-25 20:42:48 -0400
+% Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2020-02-07 14:34:11 -0500
 
 selectedSites=[12 180]; % specify the PSMSL or grid cell IDs of interest
 
@@ -11,11 +11,13 @@ corefilelabs={'K14','DP16','R18','B19H','B19L','K14SROCC'}; % specify corefile l
 subcore={'','','','corefileH','corefileL',''}; % specify if corefile file contains multiple cores
 quantlevs=[.01 .05 .167 .5 .833 .95 .99 .995 .999]; % quantiles to use
 
+corefilestodo=1:length(corefiles); % indices of corefiles (specified above) to run
+
 addpath(fullfile(rootdir,'MFILES'));
 
 %%%%
 
-for ccc=1:length(corefiles)
+for ccc=corefilestodo
 
     corefile=load(fullfile(rootdir,['IFILES/' corefiles{ccc}]));
     if length(subcore{ccc})>0
