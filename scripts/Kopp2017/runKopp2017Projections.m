@@ -4,13 +4,14 @@
 
 % set up path
 
-rootdir='~/Dropbox/Code/LocalizeSL';
+rootdir='~/Documents/Github/LocalizeSL';
 IFILES=fullfile(rootdir,'IFILES');
 corefile=load(fullfile(IFILES,'SLRProjections170113GRIDDEDcore.mat'));
 DecontoPollardpath=fullfile(IFILES,'DecontoPollard-AIS-160411');
 addpath(fullfile(rootdir,'MFILES'));
 
-selectedSites=corefile.targregions;
+%selectedSites=corefile.targregions;
+selectedSites=[24];
 
 % pull GSL samples, Kopp et al. 2014 version
 [sampsGSLrise,sampsGSLcomponents,siteidsGSL,sitenamesGSL,targyearsGSL,scensGSL,colsGSL] = LocalizeStoredProjections(0,corefile);
@@ -44,8 +45,8 @@ end
 
 % if important DP16 for the first time, do this
 
-%[RDWAIS2,RDEAIS2,ensembleLab,bcsets,ensembleids,ensembleset,RDscens,RDscenmap,RDtargyears]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears);
-%save(DecontoPollardpath,'RDWAIS2','RDEAIS2','ensembleLab','bcsets','ensembleids','ensembleset','RDscens','RDscenmap','RDtargyears');
+[RDWAIS2,RDEAIS2,ensembleLab,bcsets,ensembleids,ensembleset,RDscens,RDscenmap,RDtargyears]=DecontoPollardEnsembleImport(DecontoPollardpath,targyears);
+save(DecontoPollardpath,'RDWAIS2','RDEAIS2','ensembleLab','bcsets','ensembleids','ensembleset','RDscens','RDscenmap','RDtargyears');
 
 % but we've already done that, so save time by using the pre-imported
 % version

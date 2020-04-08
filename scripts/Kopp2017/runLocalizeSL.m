@@ -2,10 +2,11 @@
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2019-03-25 20:55:45 -0400
 
-rootdir='~/Dropbox/Code/LocalizeSL';
+rootdir='~/Documents/Github/LocalizeSL';
 addpath(fullfile(rootdir,'MFILES'));
 
-selectedSites=[12 180];
+selectedSites=[24];
+
 
 %%%%
 
@@ -46,7 +47,7 @@ for ccc=1:2
         [hp,hax,hax2]=PlotSLRProjection(sampslocrise,targyears);
         axes(hax(1));
         title([sitenames{1} ' - ' ccclab]);
-        pdfwrite(['LSLproj_' ccclab '_' nameshort '_' num2str(siteids(1)) ]);
+        %%pdfwrite(['LSLproj_' ccclab '_' nameshort '_' num2str(siteids(1)) ]);
 
         % plot variance decomposition
 
@@ -62,7 +63,7 @@ for ccc=1:2
         clf;
         [hp,vars,fvars,hlg]=PlotSLRProjectionVariance(sampsloccomponents(:,[1 3 4]),targyears,cols,[2010 2100],1,2,1,subcomp,complabls,'rcbgmykrcbgm');
         title(sitenames{1});
-        pdfwrite(['LSLprojvar_' ccclab '_' nameshort '_' num2str(siteids(1))]);
+        %pdfwrite(['LSLprojvar_' ccclab '_' nameshort '_' num2str(siteids(1))]);
 
         % output quantiles of projections
 
@@ -106,7 +107,7 @@ for ccc=1:2
         PlotSLRDecomposition(sampsloccomponents,[],[],scensel,timesel,targyears,cols,subcomp,complabls);
         set(gca,'xlim',xl);
         title([sitenames{1} ' - ' scens{scensel} ' - ' num2str(targyears(timesel)) ' - ' ccclab]);
-        pdfwrite(['LSLproj_decomp_' ccclab '_' nameshort]);
+        %pdfwrite(['LSLproj_decomp_' ccclab '_' nameshort]);
 
     end
     % pull GSL samples

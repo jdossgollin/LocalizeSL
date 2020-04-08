@@ -2,11 +2,11 @@
 %
 % Last updated by Robert Kopp, robert-dot-kopp-at-rutgers-dot-edu, 2017-06-29 08:50:54 -0400
 
-selectedSite = 12; % use PSMSL ID here to select site
+selectedSite = 24; % use PSMSL ID here to select site
 
 % set up path
 
-rootdir='~/Dropbox/Code/LocalizeSL';
+rootdir='~/Documents/Github/LocalizeSL';
 corefile=load(fullfile(rootdir,'IFILES/SLRProjections140523core.mat'));
 addpath(fullfile(rootdir,'MFILES'));
 
